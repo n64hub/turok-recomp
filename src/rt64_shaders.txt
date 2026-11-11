@@ -1,0 +1,98 @@
+# The RT64 shaders the web page builds: one shader description a line, other mode L and H, color combiner L and H,
+# flags, in hex. RT64 specializes each one's WGSL when the page is built and builds them with the game waiting: those
+# above the first "section" line before the game starts, and a section's when the game first draws with its
+# shaders, so that nothing draws with the ubershader, which integrated graphics can't afford (N64Recomp-browser's
+# docs/porting.md, Prebuilt shader lists).
+#
+# Recorded by code, not by playing: node lib/N64Recomp-browser/tools/record_shaders.mjs tools/shader_plan.json
+# build/web roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is
+# the launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game,
+# reached as a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked,
+# turned and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the bosses
+# and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults
+# means recording again.
+c81049d8 0018ec1f fc309604 5ffefff8 0ccb540e
+c8112078 0018ec1f fc327fff fffff638 0800000e
+c8112078 0018ac1f fc1217ff fffffe38 088a000e
+c8112078 0018ac1f fc1217ff fffffe38 0ccb540e
+c81049d8 0018ac1f fc327fff fffff638 0800000e
+00504240 00102c1f fc511bff 3ffdfe38 04cf542b
+00504340 00002c1f fcffffff fffdf6fb 0800000b
+c8104e50 00182c1f fcff97ff fffffe38 0ccb540a
+c8112078 0018ac1f fcff97ff fffcfe38 088a000e
+c8112078 0018ac1f fc327fff fffff638 0800000e
+00504b50 0008ecaf fc309661 552eff7f 0aaaaa0a
+00504340 0008ecaf fc309661 552eff7f 0aaaaa0a
+c8112078 00182c1f fc327fff fffff638 0800000e
+c8112078 00182c1f fcffffff fffdf638 0800000e
+c8113079 0018ac1f fc1217ff fffffe38 0ccb540a
+c8112078 001d2c1f fc26a004 1ffc93fc 188e000e
+c8113079 001cac1f fc1217ff fffffe38 088a000a
+c8113078 001cac1f fc1217ff fffffe38 088a000a
+c8113078 001cac1f fc1217ff fffffe38 0ccb540a
+c8112078 001cac1f fc1217ff fffffe38 088a000e
+c8113079 001cac1f fc1217ff fffffe38 0ccb540a
+c8112078 001cac1f fc1217ff fffffe38 088a000a
+c81049d8 001cac1f fc1217ff fffffe38 088a000e
+c8112078 001cac1f fcff97ff fffcfe38 088a000e
+c8112078 001cac1f fcffffff fffdf638 0800000e
+c8113079 001cac1f fcff97ff fffcfe38 088a000a
+00504b50 000cec1f fc50c2a1 44867f3f 088a000a
+00504340 00042c1f fcffffff fffdf6fb 0800000b
+c8113079 0018ac1f fc1217ff fffffe38 088a000a
+c8113078 0018ac1f fc1217ff fffffe38 0ccb540a
+c8112078 0018ac1f fcffffff fffdf638 0800000e
+c8112078 001c2c1f fc327fff fffff638 0800000e
+c8112078 001c2c1f fcffffff fffdf638 0800000e
+c8112078 001cac1f fc327fff fffff638 0800000e
+00504b50 000cecaf fc309661 552eff7f 0aaaaa0a
+00504b50 000cacaf fcff97ff ff2cfe7f 0aaaaa0a
+c8112078 0018ac1f fc1217ff fffffe38 088a000a
+c8112078 001c2c1f fc327fff fffff638 0800000a
+c8112078 001cac1f fc327fff fffff638 0800000a
+c8113078 0018ac1f fc1217ff fffffe38 088a000a
+c8112078 001cac1f fc1217ff fffffe38 0ccb540e
+c81049d8 001cac1f fc327fff fffff638 0800000e
+c81049d8 001cec1f fc309604 5ffefff8 0ccb540e
+c8112078 001cec1f fc327fff fffff638 0800000e
+00504240 00042c1f fcffffff fffdf6fb 0800000b
+00504240 00042c1f fcffffff fffe793c 0800000a
+00504240 00142c1f fc511bff 3ffdfe38 0ccf542b
+00504b50 0008ac1f fc127e24 fffff9fc 088a000a
+c8112078 001cac1f fcff96ac f0fcfe38 088a000e
+c81041f8 001cac1f fc327fff ff17f63f 0800000e
+c81041f8 001cac1f fcff97ff ff14fe3f 088a000e
+c8112078 001cac1f fc1216ac f0fffe38 088a000e
+c81041f8 001cac1f fc1217ff ff17fe3f 088a000e
+c81049d8 001cec1f fc309604 5ffefff8 088a000e
+00504b50 000cac1f fc127e24 fffff9fc 088a000a
+00504240 00142c1f fc511bff 3ffdfe38 04cf542b
+c8112438 001d2c1f fc26a004 1ffc93fc 188e000e
+c8112438 001cac1f fc1217ff fffffe38 088a000e
+c8104e50 001c2c1f fcff97ff fffffe38 0ccb540a
+c8112478 001cac1f fcff97ff fffcfe38 088a000e
+c8112478 001cac1f fc1217ff fffffe38 088a000e
+c8112478 001cac1f fc327fff fffff638 0800000e
+c81049d8 001cec1f fc309604 5ffefff8 088a000a
+c8104b50 001c2c1f fcff97ff fffffe38 0ccb540a
+0c184240 00140c1f fc12abff fffffe38 04cf540b
+section level1
+c8112038 001cac1f fc1217ff fffffe38 088a000a
+c8112438 0018ac1f fc1217ff fffffe38 088a000e
+c8112038 001cac1f fc1217ff fffffe38 088a000e
+00504340 00142c1f fc12abff fffffe38 0ccf542b
+00504340 00142c1f fc12abff fffffe38 04cf542b
+c8112438 00192c1f fc26a004 1ffc93fc 1806008e
+c8112478 0018ac1f fcff97ff fffcfe38 088a000e
+c8112038 0018ac1f fc1217ff fffffe38 088a000e
+c81049d8 0018ec1f fc309604 5ffefff8 088a000a
+c8104b50 00182c1f fcff97ff fffffe38 0ccb540a
+c8112078 0018ac1f fc327fff fffff638 0800000a
+0c184240 00100c1f fc12abff fffffe38 04cf540b
+00504340 000cac1f fcffffff fffdf6fb 0800000b
+c8112438 001cac1f fc327fff fffff638 0800000a
+c8112438 001c2c1f fc327fff fffff638 0800000a
+c8112478 001d2c1f fc26a004 1ffc93fc 188e000e
+c8112478 00192c1f fc26a004 1ffc93fc 1806008e
+c8112478 001c2c1f fc327fff fffff638 0800000a
+c8112478 001cac1f fc327fff fffff638 0800000a
