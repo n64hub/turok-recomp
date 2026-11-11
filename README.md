@@ -16,7 +16,7 @@ The repo holds no ROM, no asset from the game and no data extracted from it: you
 git or CI is made from one except the symbol names, addresses and sizes in `syms/` and where the code is in the ROM
 (`syms/layout.toml`).
 
-**Status:** the whole game is recompiled; the desktop build is being brought up.
+**Status:** the desktop build plays: from boot through the intro and the title menu into the first level.
 
 ## The ROM
 
