@@ -16,7 +16,10 @@ The repo holds no ROM, no asset from the game and no data extracted from it: you
 git or CI is made from one except the symbol names, addresses and sizes in `syms/` and where the code is in the ROM
 (`syms/layout.toml`).
 
-**Status:** the desktop build plays: from boot through the intro and the title menu into the first level.
+**Status:** released for Windows and Linux (`releases/`). The desktop build plays from boot through the intro and the
+title menu into the first level, with sound, and keyboard and gamepad input. The game hasn't been played past the first
+level's start yet. The same game plays in a browser through WebGPU, at
+[n64hub.com/turok-dinosaur-hunter](https://n64hub.com/turok-dinosaur-hunter/) (`docs/web.md`).
 
 ## The ROM
 
@@ -50,6 +53,12 @@ ROM with Load ROM, then Start Game.
 
 `syms/` is written from the unpacked ROM by `python3 lib/turok-engine/tools/gen_syms.py` (it needs
 `pip install spimdisasm`); run it again only when the engine's finder or `syms/names.toml` changes.
+
+## Releases
+
+Each release is built where the ROM is, by `tools/release.sh` (its header says how), from the merge commit of a pull
+request titled "Release v<version>" that bumps `version_string` in `src/main/main.cpp` and moves `releases/next.md`,
+where each change adds what the player gets, to `releases/v<version>.md`, the release's notes.
 
 ## License
 

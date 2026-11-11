@@ -28,6 +28,11 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
   web forks are built on, and `N64Recomp-browser`, whose `patches/` `tools/build_n64recomp.sh` and `CMakeLists.txt`
   apply to the other three. `runtime-patches/` are this game's own over them.
 - `icons/`: drawn by `tools/icon.ps1` from plain text and shapes.
+- The web page: the `EMSCRIPTEN` branches of `CMakeLists.txt`, `tools/build_web.sh` (in `tools/docker/Dockerfile.web`)
+  and the shader list `src/rt64_shaders.txt`, recorded by `tools/shader_plan.json`; `tools/play_plan.json` is the
+  page's play, and `tools/survey.js` reads the main loop's state for both (`docs/web.md`).
+- Releases: `tools/release.sh` (Linux in `tools/docker/Dockerfile.linux`), each release's notes in `releases/`
+  (README, Releases).
 - Comments beside the code, for how and why: each file's header. Read the header of the file you change and update
   it in the same commit.
 
