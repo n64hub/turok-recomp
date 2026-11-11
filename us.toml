@@ -47,3 +47,28 @@ text = "    { void turok_set_clock_rate(uint8_t*, uint32_t); turok_set_clock_rat
 func = "func_8002BBFC"
 vram = 0x8002BDD0
 value = 0x00000000
+
+# Widescreen (lib/turok-engine/src/widescreen.cpp, src/game/widescreen.cpp). The frame (func_800023EC, from the main
+# loop's func_80007E44) draws through the display list head in its graphics struct ($a0, the head at +0x1F810); the
+# main loop is done with the display list where it ends it, at 0x80007F48. The game's play (func_800036B0, the
+# graphics struct in $s1) draws the world, and from 0x800037F4 its HUD: the status bar's health, ammo and keys
+# (func_8007D544) and the messages (func_80083310).
+[[patches.hook]]
+func = "func_800023EC"
+before_vram = 0x800023EC
+text = "    { void t1_frame_begin(uint8_t*, uint32_t); t1_frame_begin(rdram, (uint32_t)ctx->r4); }"
+
+[[patches.hook]]
+func = "func_80007E44"
+before_vram = 0x80007F48
+text = "    { void turok_frame_end(uint8_t*); turok_frame_end(rdram); }"
+
+[[patches.hook]]
+func = "func_800036B0"
+before_vram = 0x800037F4
+text = "    { void turok_hud_begin(uint8_t*); turok_hud_begin(rdram); }"
+
+[[patches.hook]]
+func = "func_800036B0"
+before_vram = 0x80003830
+text = "    { void turok_hud_end(uint8_t*); turok_hud_end(rdram); }"

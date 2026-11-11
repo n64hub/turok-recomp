@@ -188,12 +188,14 @@ target_sources(TurokRecompiled PRIVATE
     ${CMAKE_SOURCE_DIR}/src/game/boot.cpp
     ${CMAKE_SOURCE_DIR}/src/game/config.cpp
     ${CMAKE_SOURCE_DIR}/src/game/recomp_api.cpp
+    ${CMAKE_SOURCE_DIR}/src/game/widescreen.cpp
     # The engine the Turok games share (lib/turok-engine/README.md), but its tlb_views.cpp: all of this game runs in
     # kseg0, with nothing TLB-mapped.
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/audio.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/controller_pak.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/libultra.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/pi_dma.cpp
+    ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/widescreen.cpp
 )
 if (T1_PATCHES)
     target_sources(TurokRecompiled PRIVATE ${CMAKE_SOURCE_DIR}/src/main/register_patches.cpp)
