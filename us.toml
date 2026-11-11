@@ -38,3 +38,12 @@ value = 0x08000131
 func = "t1_boot_main"
 before_vram = 0x80001CE4
 text = "    { void turok_set_clock_rate(uint8_t*, uint32_t); turok_set_clock_rate(rdram, 0x800EE420); }"
+
+# The RCP scheduler's watchdog (the retrace handler, from 0x8002BBFC): when 160 retraces pass with no graphics task
+# done, it stores to address 0 on purpose, the console's crash for a hung RCP. Here a frame that long is a first-time
+# shader build or a slow GPU (Mesa's software Vulkan with an empty shader cache took that long at boot), not a hang:
+# the store is a nop, and the game waits for the frame.
+[[patches.instruction]]
+func = "func_8002BBFC"
+vram = 0x8002BDD0
+value = 0x00000000

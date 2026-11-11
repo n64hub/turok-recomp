@@ -66,6 +66,7 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - Its audio thread makes audio frames for as long as osAiGetStatus doesn't report the FIFO full, so osAiGetStatus is
   the engine's `turok_ai_get_status`; with the runtime's, which never reports it full, the thread starves the main one.
 - Its RCP scheduler (libultra's sample scheduler, messages 666 to 669) crashes on purpose, a store to address 0, when
-  160 retraces pass with no graphics task done: a hang anywhere before the first frame shows up there.
+  160 retraces pass with no graphics task done. `us.toml` makes that store a nop, since here a frame that long is a
+  shader build or a slow GPU, not a hung RCP; so a hang before the first frame shows as a black window, not a crash.
 - Its threads: 1 idle, 3 audio, 4 the scheduler, 5 the fault handler, 6 the main loop (`0x80008604`, its state machine
   on the word at 0x80119534).
