@@ -37,6 +37,11 @@ vram = 0x80000C7C
 [[label]]
 vram = 0x80001220
 
+# The controller code's button edges and stick scaling (from 0x80010DCC) has its stack adjustment scheduled after its
+# first thirteen instructions: addiu $sp, $sp, -0x48 here reads as a start, and splits the function in two.
+[[label]]
+vram = 0x80010E00
+
 # The main program's entry and its first thread's setup.
 
 [[func]]
