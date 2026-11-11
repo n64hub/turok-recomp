@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Generates RecompiledFuncs/ from roms/turok1.us.z64: the game's code from the symbols in syms/ with N64Recomp
-# (us.toml), and the audio microcode with RSPRecomp (aspMain.us.toml, RecompiledFuncs/aspMain_rsp.cpp). It is wiped and
-# written again, and the game's CMake configure needs it; a file that comes out the same as before keeps its old time,
+# Generates RecompiledFuncs/ from roms/turok1.us.z64: the main program unpacked out of it first (tools/unpack_main.py,
+# roms/turok1.us.recomp.z64), then the game's code from the symbols in syms/ with N64Recomp (us.toml), and the audio
+# microcode with RSPRecomp (aspMain.us.toml, RecompiledFuncs/aspMain_rsp.cpp). RecompiledFuncs/ is wiped and written
+# again, and the game's CMake configure needs it; a file that comes out the same as before keeps its old time,
 # so a build recompiles only the ones that changed. N64Recomp and RSPRecomp are the ones the runtime pins, built by
 # tools/build_n64recomp.sh, which takes the arguments.
 #
@@ -9,6 +10,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 bash tools/build_n64recomp.sh "$@"
+if command -v python3 > /dev/null; then python3 tools/unpack_main.py; else py -3 tools/unpack_main.py; fi
 old="$(mktemp -d)"
 trap 'rm -rf "$old"' EXIT
 mkdir -p RecompiledFuncs

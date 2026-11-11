@@ -25,7 +25,7 @@ on:
 
 # Called from the engine, a group of the game's own, or the engine's run and its own would cancel each other.
 concurrency:
-  group: ci-${{ inputs.engine-ref && 't2-' || '' }}${{ github.ref }}
+  group: ci-${{ inputs.engine-ref && 't1-' || '' }}${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -46,7 +46,7 @@ jobs:
         env:
           TOKEN: ${{ github.token }}
           # Called from the engine, $GITHUB_REPOSITORY and $GITHUB_SHA are the engine's.
-          REPO: ${{ inputs.engine-ref && 'n64hub/turok-2-recomp' || github.repository }}
+          REPO: ${{ inputs.engine-ref && 'n64hub/turok-recomp' || github.repository }}
           REF: ${{ inputs.engine-ref && 'main' || github.sha }}
         run: |
           git init -q
@@ -65,7 +65,7 @@ jobs:
         id: key
         shell: bash
         run: |
-          prefix="build-v1-${ENGINE_REF:+t2-}$ImageOS-"
+          prefix="build-v1-${ENGINE_REF:+t1-}$ImageOS-"
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
           echo "key=$prefix$ImageVersion-$(git ls-tree HEAD lib runtime-patches | git hash-object --stdin)${ENGINE_REF:+-$ENGINE_REF}" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
@@ -155,7 +155,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: ${{ inputs.engine-ref && 'n64hub/turok-2-recomp' || github.repository }}
+          repository: ${{ inputs.engine-ref && 'n64hub/turok-recomp' || github.repository }}
           ref: ${{ inputs.engine-ref && 'main' || '' }}
           persist-credentials: false
       - uses: actions/setup-python@v5
@@ -170,7 +170,7 @@ jobs:
       - name: Cache key
         id: key
         run: |
-          prefix="build-v1-${ENGINE_REF:+t2-}$ImageOS-"
+          prefix="build-v1-${ENGINE_REF:+t1-}$ImageOS-"
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
           echo "key=$prefix$ImageVersion-$(git ls-tree HEAD lib runtime-patches | git hash-object --stdin)${ENGINE_REF:+-$ENGINE_REF}" >> "$GITHUB_OUTPUT"
           echo "apt=apt-$ImageOS-$ImageVersion" >> "$GITHUB_OUTPUT"

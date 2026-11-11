@@ -1,4 +1,4 @@
-// Turok 2: Recompiled on RecompFrontend: its launcher (Load ROM, Start Game), settings menus, input and RT64
+// Turok: Recompiled on RecompFrontend: its launcher (Load ROM, Start Game), settings menus, input and RT64
 // render context. The natives the patches call are recomp_api.cpp, the settings config.cpp.
 
 #include <cstdio>
@@ -91,8 +91,8 @@ ultramodern::gfx_callbacks_t::gfx_data_t create_gfx() {
     return {};
 }
 
-// One player: port 1 has a controller, any pad or the keyboard, with a pak in it. Turok 2 reads the controllers'
-// status for a pak before it opens its Controller Pak save, and with none it stops on "Controller Pak not found".
+// One player: port 1 has a controller, any pad or the keyboard, with a pak in it, where the game keeps its Controller
+// Pak saves.
 // ultramodern reports a pak for any Pak but None, and RumblePak is the only other it has; which pak the game finds is
 // the engine's (lib/turok-engine/src/controller_pak.cpp, a Controller Pak in port 1).
 ultramodern::input::connected_device_info_t get_connected_device_info(int controller_num) {
@@ -321,21 +321,21 @@ RspUcodeFunc* get_rsp_microcode(const OSTask* task) {
 
 extern "C" void recomp_entrypoint(uint8_t* rdram, recomp_context* ctx);
 
-// The engine maps the game's TLB-mapped code where the code runs (lib/turok-engine/src/tlb_views.cpp) and switches the
-// FPU to the mode the console's boot code leaves it in, for the entry thread here and every thread after.
+// The FPU in the mode the console's boot code leaves it in, for the entry thread here and every thread after
+// (lib/turok-engine), and the main program's functions where the boot code unpacks it.
 static void on_init(uint8_t* rdram, recomp_context* ctx) {
     turok::set_fpu_mode(ctx);
-    t1::map_code_sections(rdram);
+    t1::register_main_program();
 }
 
 std::vector<recomp::GameEntry> supported_games = {
     {
-        // XXH3 of Turok 2: Seeds of Evil (USA 1.0), SHA-1 fb0400f21e3f043939ab56500c7b12a3231006f1.
-        .rom_hash = 0xc8a153e0c80403aaULL,
-        .internal_name = "Turok 2: Seeds of Ev",
-        .display_name = "Turok 2: Seeds of Evil",
-        .game_id = u8"turok2.n64.us.1.0",
-        .mod_game_id = "turok2",
+        // XXH3 of Turok: Dinosaur Hunter (USA 1.0), SHA-1 40fb0250c095740031278fb1f82b9937a3895e01.
+        .rom_hash = 0xafb2a75fa5db1a68ULL,
+        .internal_name = "TUROK_DINOSAUR_HUNTE",
+        .display_name = "Turok: Dinosaur Hunter",
+        .game_id = u8"turok1.n64.us.1.0",
+        .mod_game_id = "turok1",
         // The game saves to a Controller Pak (libultra's osPfs calls), which is no save type of the cartridge's.
         .save_type = recomp::SaveType::None,
         .thumbnail_bytes = std::span<const char>(icon_bytes),
