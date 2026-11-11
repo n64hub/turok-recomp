@@ -1,0 +1,28 @@
+# Where Turok: Dinosaur Hunter (USA 1.0)'s code is, for lib/turok-engine/tools/gen_syms.py, which writes
+# syms/turok1.us.syms.toml with it. The ROM it reads is roms/turok1.us.recomp.z64, the player's ROM with the main
+# program unpacked after it (tools/unpack_main.py): its SHA-1 follows from the ROM's.
+rom = "roms/turok1.us.recomp.z64"
+sha1 = "00c6b06f1c300a79db2c8aa389b248d9aeb50a43"
+out = "syms/turok1.us.syms.toml"
+names = "syms/names.toml"
+
+# The boot code: the IPL3 copies the first MB after the header to 0x80000400, and only its first 0xF00 bytes are code:
+# the entry point, a ROM read straight off the cartridge bus, and the RNC unpackers that put the main program at
+# 0x80001300 over the rest of that MB.
+[[segment]]
+name = "boot"
+rom = 0x1000
+vram = 0x80000400
+text_end = 0x1F00
+data_end = 0x1F00
+
+# The main program, packed at ROM 0x783690 and unpacked by the boot code to 0x80001300; unpacked by
+# tools/unpack_main.py to ROM 0x800000 here. Its text, then the microcodes, rodata and data. Its bss follows, to
+# 0x8013A130. The text ends at 0x800B2330, where the RSP microcodes start.
+[[segment]]
+name = "main"
+rom = 0x800000
+vram = 0x80001300
+text_end = 0x8B1030
+data_end = 0x8F7D20
+library = true

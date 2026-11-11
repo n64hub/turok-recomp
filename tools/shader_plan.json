@@ -1,0 +1,322 @@
+{
+ "page": "TurokRecompiled.html",
+ "header": [
+  "The RT64 shaders the web page builds: one shader description a line, other mode L and H, color combiner L and H,",
+  "flags, in hex. RT64 specializes each one's WGSL when the page is built and builds them with the game waiting: those",
+  "above the first \"section\" line before the game starts, and a section's when the game first draws with its",
+  "shaders, so that nothing draws with the ubershader, which integrated graphics can't afford (N64Recomp-browser's",
+  "docs/porting.md, Prebuilt shader lists).",
+  "",
+  "Recorded by code, not by playing: node lib/N64Recomp-browser/tools/record_shaders.mjs tools/shader_plan.json",
+  "build/web roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is",
+  "the launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game,",
+  "reached as a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked,",
+  "turned and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the bosses",
+  "and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults",
+  "means recording again."
+ ],
+ "load": [
+  [
+   "until",
+   "RT64: all [0-9]+ prebuilt shaders built|once the game draws",
+   45000
+  ],
+  [
+   "wait",
+   3000
+  ]
+ ],
+ "setup": [
+  [
+   "rom",
+   627,
+   364
+  ],
+  [
+   "wait",
+   3000
+  ]
+ ],
+ "start": [
+  [
+   "click",
+   627,
+   364
+  ],
+  [
+   "wait",
+   1000
+  ],
+  [
+   "evalFile",
+   "survey.js"
+  ],
+  [
+   "need",
+   "t1.reached(3, 90000)"
+  ],
+  [
+   "eval",
+   "console.log(\"[plan] \" + t1.where()); true"
+  ],
+  [
+   "wait",
+   3000
+  ],
+  [
+   "shot",
+   "title.png"
+  ],
+  [
+   "pressUntil",
+   "Space",
+   " ",
+   32,
+   150,
+   2000,
+   "t1.state() == 4",
+   60000
+  ],
+  [
+   "need",
+   "t1.reached(4, 1000)"
+  ],
+  [
+   "eval",
+   "console.log(\"[plan] \" + t1.where()); true"
+  ]
+ ],
+ "sections": [
+  {
+   "name": "level1",
+   "steps": [
+    [
+     "wait",
+     20000
+    ],
+    [
+     "shot",
+     "flyover.png"
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyD",
+     "d",
+     68,
+     600
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "wait",
+     500
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyA",
+     "a",
+     65,
+     1200
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "wait",
+     800
+    ],
+    [
+     "hold",
+     "KeyD",
+     "d",
+     68,
+     1500
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     4000
+    ],
+    [
+     "hold",
+     "Space",
+     " ",
+     32,
+     300
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     2000
+    ],
+    [
+     "shot",
+     "level.png"
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyD",
+     "d",
+     68,
+     600
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "wait",
+     500
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyA",
+     "a",
+     65,
+     1200
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     3000
+    ],
+    [
+     "hold",
+     "KeyQ",
+     "q",
+     81,
+     150
+    ],
+    [
+     "wait",
+     800
+    ],
+    [
+     "hold",
+     "KeyD",
+     "d",
+     68,
+     1500
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     4000
+    ],
+    [
+     "hold",
+     "Space",
+     " ",
+     32,
+     300
+    ],
+    [
+     "hold",
+     "ArrowUp",
+     "ArrowUp",
+     38,
+     2000
+    ],
+    [
+     "hold",
+     "Enter",
+     "Enter",
+     13,
+     150
+    ],
+    [
+     "wait",
+     3000
+    ],
+    [
+     "shot",
+     "pause.png"
+    ],
+    [
+     "hold",
+     "Enter",
+     "Enter",
+     13,
+     150
+    ],
+    [
+     "wait",
+     3000
+    ],
+    [
+     "eval",
+     "console.log(\"[plan] \" + t1.where()); true"
+    ]
+   ]
+  }
+ ]
+}
