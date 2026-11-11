@@ -10,7 +10,7 @@ own.
 This repo is the game: its symbols, its recompilation, the patches over it and the desktop build. What the Turok games
 share is `lib/turok-engine` (n64hub/turok-engine, its README says what is there and how a game uses it): change it
 there, then move this repo's submodule onto the commit. Turok 1 came before the engine family's TLB-mapped code, so it
-takes from the engine only what fits (the finder, the Controller Pak, the FPU mode, osClockRate).
+takes from the engine only what fits (the finder, the Controller Pak, the FPU mode, osClockRate, widescreen).
 
 - `tools/unpack_main.py`: unpacks the main program (RNC method 1) from `roms/turok1.us.z64` into
   `roms/turok1.us.recomp.z64`, which is what the finder, N64Recomp and RSPRecomp read. `tools/recompile.sh` runs it.
@@ -23,7 +23,8 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
   `recompui_event_structs.h` are RecompFrontend's.
 - `src/main/main.cpp`: RecompFrontend's main with the GameEntry. `src/main/register_overlays.cpp`: the code sections,
   and the main program's functions registered where the boot code unpacks it. `src/game/`: the settings, the boot
-  code's ROM read (`boot.cpp`) and the natives the patches call.
+  code's ROM read (`boot.cpp`), the natives the patches call, and the frame's hook for the engine's widescreen
+  (`widescreen.cpp`).
 - `lib/`: `turok-engine`, upstream `rt64`, `N64ModernRuntime` and `RecompFrontend` at the commits N64Recomp-browser's
   web forks are built on, and `N64Recomp-browser`, whose `patches/` `tools/build_n64recomp.sh` and `CMakeLists.txt`
   apply to the other three. `runtime-patches/` are this game's own over them.
@@ -68,5 +69,8 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - Its RCP scheduler (libultra's sample scheduler, messages 666 to 669) crashes on purpose, a store to address 0, when
   160 retraces pass with no graphics task done. `us.toml` makes that store a nop, since here a frame that long is a
   shader build or a slow GPU, not a hung RCP; so a hang before the first frame shows as a black window, not a crash.
+- Its graphics code is handed a graphics struct (the frame's func_800023EC takes it in $a0) and writes the display list
+  through the head in it, at +0x1F810, for the F3DEX microcode (GBI 1). The struct is double-buffered: the frame swaps
+  it in its first calls, so the frame's widescreen hook sits after them (`us.toml`).
 - Its threads: 1 idle, 3 audio, 4 the scheduler, 5 the fault handler, 6 the main loop (`0x80008604`, its state machine
   on the word at 0x80119534).

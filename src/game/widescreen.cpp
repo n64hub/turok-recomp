@@ -8,6 +8,7 @@
 
 // The frame (func_800023EC) starts, with its graphics struct.
 extern "C" void t1_frame_begin(uint8_t* rdram, uint32_t graphics) {
-    turok::set_display_list_head(graphics + 0x1F810);
+    turok::set_display_list_head(graphics + 0x1F810, turok::Microcode::F3DEX);
     turok_frame_begin(rdram);
 }
+

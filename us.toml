@@ -55,8 +55,8 @@ value = 0x00000000
 # (func_8007D544) and the messages (func_80083310).
 [[patches.hook]]
 func = "func_800023EC"
-before_vram = 0x800023EC
-text = "    { void t1_frame_begin(uint8_t*, uint32_t); t1_frame_begin(rdram, (uint32_t)ctx->r4); }"
+before_vram = 0x8000240C
+text = "    { void t1_frame_begin(uint8_t*, uint32_t); t1_frame_begin(rdram, (uint32_t)ctx->r16); }"
 
 [[patches.hook]]
 func = "func_80007E44"
@@ -72,3 +72,10 @@ text = "    { void turok_hud_begin(uint8_t*); turok_hud_begin(rdram); }"
 func = "func_800036B0"
 before_vram = 0x80003830
 text = "    { void turok_hud_end(uint8_t*); turok_hud_end(rdram); }"
+
+# The camera (func_80037E3C) has made its float view-projection matrix, at 0x801195F4, which the culling reads, and
+# the display list's copy of it (func_800121E0): widened from here for the culling.
+[[patches.hook]]
+func = "func_80037E3C"
+before_vram = 0x800385E0
+text = "    { void turok_widen_culling(uint8_t*, uint32_t); turok_widen_culling(rdram, 0x801195F4); }"
