@@ -86,6 +86,12 @@ name = "osAiSetFrequency"
 vram = 0x800A4F00
 name = "osAiSetNextBuffer"
 
+# The audio thread makes audio frames while this reports the AI FIFO not full: the engine's, which paces it
+# (lib/turok-engine/src/audio.cpp).
+[[func]]
+vram = 0x800A4E70
+name = "turok_ai_get_status"
+
 [[func]]
 vram = 0x800AFD50
 name = "osCartRomInit"

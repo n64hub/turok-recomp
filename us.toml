@@ -21,6 +21,8 @@ stubs = [
 ignored = [
     # The boot code's ROM read, which polls the PI and loads words straight off the cartridge bus (src/game/boot.cpp).
     "t1_boot_rom_read",
+    # osAiGetStatus, the audio thread's pace (lib/turok-engine/src/audio.cpp).
+    "turok_ai_get_status",
 ]
 
 # The entry point sets $sp and jumps to the loader with jr $t2, which N64Recomp would take for a switch: a j to the same

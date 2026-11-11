@@ -2244,7 +2244,7 @@ functions = [
     { name = "alLink", vram = 0x800A4DE0, size = 0x24 },
     { name = "func_800A4E04", vram = 0x800A4E04, size = 0x38 },
     { name = "func_800A4E3C", vram = 0x800A4E3C, size = 0x34 },
-    { name = "osAiGetStatus", vram = 0x800A4E70, size = 0xC },
+    { name = "turok_ai_get_status", vram = 0x800A4E70, size = 0xC },
     { name = "osVirtualToPhysical", vram = 0x800A4E80, size = 0x7C },
     { name = "osAiSetNextBuffer", vram = 0x800A4F00, size = 0xA8 },
     { name = "func_800A4FB0", vram = 0x800A4FB0, size = 0x8 },

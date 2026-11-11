@@ -321,10 +321,10 @@ RspUcodeFunc* get_rsp_microcode(const OSTask* task) {
 
 extern "C" void recomp_entrypoint(uint8_t* rdram, recomp_context* ctx);
 
-// The FPU in the mode the console's boot code leaves it in, for the entry thread here and every thread after
-// (lib/turok-engine), and the main program's functions where the boot code unpacks it.
+// The main program's functions, where the boot code unpacks them. The FPU stays in the runtime's default mode, FR=0
+// (32-bit registers, a double in an even/odd pair), which is what this game's code is compiled for: unlike the later
+// games, it takes nothing from the engine's turok::set_fpu_mode.
 static void on_init(uint8_t* rdram, recomp_context* ctx) {
-    turok::set_fpu_mode(ctx);
     t1::register_main_program();
 }
 
@@ -342,7 +342,6 @@ std::vector<recomp::GameEntry> supported_games = {
         .is_enabled = true,
         .entrypoint_address = turok::boot_load_address,
         .entrypoint = recomp_entrypoint,
-        .thread_create_callback = turok::on_thread_create,
         .on_init_callback = on_init,
     },
 };

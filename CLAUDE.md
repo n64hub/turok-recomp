@@ -54,3 +54,13 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
   osContInit, osPiStartDma, osAi*): `syms/names.toml` names them, found by their calls and registers.
 - It does its DMA through libultra's PI manager (osPiStartDma), unlike the later games' own DMA threads.
 - It saves to a Controller Pak in port 1.
+- Its code is compiled for the FPU's FR=0 mode (32-bit registers, a double in an even/odd pair: no double operation
+  names an odd register, and mtc1/mfc1 move the halves), the runtime's default, unlike the later games: it doesn't call
+  the engine's `turok::set_fpu_mode`. In FR=1 its doubles read wrong (the legal screen's timer reads 0 and the screen
+  restarts for good).
+- Its audio thread makes audio frames for as long as osAiGetStatus doesn't report the FIFO full, so osAiGetStatus is
+  the engine's `turok_ai_get_status`; with the runtime's, which never reports it full, the thread starves the main one.
+- Its RCP scheduler (libultra's sample scheduler, messages 666 to 669) crashes on purpose, a store to address 0, when
+  160 retraces pass with no graphics task done: a hang anywhere before the first frame shows up there.
+- Its threads: 1 idle, 3 audio, 4 the scheduler, 5 the fault handler, 6 the main loop (`0x80008604`, its state machine
+  on the word at 0x80119534).
