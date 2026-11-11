@@ -25,13 +25,17 @@ name = "t1_rnc1_unpack"
 vram = 0x80000BD0
 name = "t1_rnc2_unpack"
 
+# The method 2 unpacker's body, which its wrapper above calls; it starts in the delay slot of the wrapper's jr $ra.
+# Hand-written, it jumps to labels across itself, which are no function starts.
 [[func]]
-vram = 0x80000C7C
+vram = 0x80000C78
 name = "t1_rnc2_unpack_body"
 
-[[func]]
+[[label]]
+vram = 0x80000C7C
+
+[[label]]
 vram = 0x80001220
-name = "t1_rnc2_unpack_tail"
 
 # The main program's entry and its first thread's setup.
 
@@ -114,12 +118,8 @@ vram = 0x800A6FE0
 name = "__osViInit"
 
 [[func]]
-vram = 0x800A6720
+vram = 0x800A73B0
 name = "__osDevMgrMain"
-
-[[func]]
-vram = 0x800A72D0
-name = "osEPiRawStartDma"
 
 [[func]]
 vram = 0x800AB070

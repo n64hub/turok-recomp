@@ -13,12 +13,8 @@ output_func_path = "RecompiledFuncs"
 use_absolute_symbols = true
 
 [patches]
-# The boot code's unpacker for RNC method 2, hand-written and branching between its pieces, which N64Recomp can't
-# follow. The main program is packed with method 1, so it never runs. Stubbed (empty bodies).
+# Development hardware's cop0 register 7 (syms/names.toml); no call reaches it. Stubbed (an empty body).
 stubs = [
-    "t1_rnc2_unpack_body",
-    "t1_rnc2_unpack_tail",
-    # Development hardware's cop0 register 7 (syms/names.toml); no call reaches it.
     "t1_DevCop0",
 ]
 # Natives in their place.
