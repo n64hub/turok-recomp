@@ -1,0 +1,24 @@
+# RSPRecomp's configuration for Turok: Dinosaur Hunter's audio microcode, aspMain (libultra's ABI 1). Graphics tasks go
+# to RT64; the audio tasks the game sends need this microcode recompiled to run (src/main/main.cpp, get_rsp_microcode).
+# tools/recompile.sh writes it into RecompiledFuncs/.
+#
+# - The text is in the main program's rodata at 0x800B5AC0, 0xE1C bytes, ending in `j 0x1118` and its delay slot: ROM
+#   0x8B47C0 of roms/turok1.us.recomp.z64, where tools/unpack_main.py puts the unpacked program. It is byte for byte
+#   Turok 2's and Rage Wars' (PaxDino's aspMain.us.toml).
+# - text_address is the IMEM address its first byte runs at, 0x04001080, after the boot microcode.
+# - The command handlers are reached through a table in the data segment (0x800F8D60, ROM 0x8F7A60), which RSPRecomp
+#   can't find by following the instructions, so they are listed below: the data's 16 halfwords from offset 0x10.
+
+rom_file_path = "roms/turok1.us.recomp.z64"
+text_offset = 0x8B47C0
+text_size = 0xE1C
+text_address = 0x04001080
+
+# C++, not C: the output includes librecomp's RSP header. CMakeLists.txt builds RecompiledFuncs/*.cpp with the game.
+output_file_path = "RecompiledFuncs/aspMain_rsp.cpp"
+output_function_name = "aspMain_run"
+
+extra_indirect_branch_targets = [
+    0x1118, 0x1470, 0x11DC, 0x1B38, 0x1214, 0x187C, 0x1254, 0x12D0,
+    0x12EC, 0x1328, 0x140C, 0x1294, 0x1E24, 0x138C, 0x170C, 0x144C,
+]

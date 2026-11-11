@@ -1,0 +1,42 @@
+# N64Recomp's configuration for Turok: Dinosaur Hunter (USA 1.0), SHA-1 40fb0250c095740031278fb1f82b9937a3895e01: it
+# reads the game's code by the symbols in syms/ (lib/turok-engine/tools/gen_syms.py and syms/layout.toml) out of
+# roms/turok1.us.recomp.z64, the ROM with its packed main program unpacked after it (tools/unpack_main.py), and writes
+# RecompiledFuncs/ (tools/recompile.sh). Unlike the later games of the engine, all of its code runs in kseg0.
+[input]
+# The header's entry point: the boot code the IPL3 copies there, which reads the packed main program from the ROM,
+# unpacks it to 0x80001300 and jumps to it.
+entrypoint = 0x80000400
+# Paths are relative to this file.
+symbols_file_path = "syms/turok1.us.syms.toml"
+rom_file_path = "roms/turok1.us.recomp.z64"
+output_func_path = "RecompiledFuncs"
+use_absolute_symbols = true
+
+[patches]
+# The boot code's unpacker for RNC method 2, hand-written and branching between its pieces, which N64Recomp can't
+# follow. The main program is packed with method 1, so it never runs. Stubbed (empty bodies).
+stubs = [
+    "t1_rnc2_unpack_body",
+    "t1_rnc2_unpack_tail",
+    # Development hardware's cop0 register 7 (syms/names.toml); no call reaches it.
+    "t1_DevCop0",
+]
+# Natives in their place.
+ignored = [
+    # The boot code's ROM read, which polls the PI and loads words straight off the cartridge bus (src/game/boot.cpp).
+    "t1_boot_rom_read",
+]
+
+# The entry point sets $sp and jumps to the loader with jr $t2, which N64Recomp would take for a switch: a j to the same
+# address, a tail call. N64Recomp names the entry point recomp_entrypoint.
+[[patches.instruction]]
+func = "recomp_entrypoint"
+vram = 0x8000040C
+value = 0x08000131
+
+# osClockRate (0x800EE420): libultra's osInitialize sets it, but the runtime's, which runs in its place, doesn't
+# (lib/turok-engine/src/pi_dma.cpp). Set right after the game's call.
+[[patches.hook]]
+func = "t1_boot_main"
+before_vram = 0x80001CE4
+text = "    { void turok_set_clock_rate(uint8_t*, uint32_t); turok_set_clock_rate(rdram, 0x800EE420); }"

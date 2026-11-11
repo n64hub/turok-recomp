@@ -1,0 +1,157 @@
+# Names worked out for Turok: Dinosaur Hunter's functions, kept for good (mods and hooks use them).
+# lib/turok-engine/tools/gen_syms.py takes each as a function start and names it, over n64sym's names and
+# func_<address>. t1_ marks the game's own.
+#
+# The boot code (ROM 0x1000, run at 0x80000400): the entry point, the ROM read off the cartridge bus it loads the packed
+# main program with (replaced by a native, src/game/boot.cpp), its loader, and the RNC unpackers.
+
+[[func]]
+vram = 0x80000400
+name = "t1_entrypoint"
+
+[[func]]
+vram = 0x80000450
+name = "t1_boot_rom_read"
+
+[[func]]
+vram = 0x800004C4
+name = "t1_boot_load_main"
+
+[[func]]
+vram = 0x80000640
+name = "t1_rnc1_unpack"
+
+[[func]]
+vram = 0x80000BD0
+name = "t1_rnc2_unpack"
+
+[[func]]
+vram = 0x80000C7C
+name = "t1_rnc2_unpack_body"
+
+[[func]]
+vram = 0x80001220
+name = "t1_rnc2_unpack_tail"
+
+# The main program's entry and its first thread's setup.
+
+[[func]]
+vram = 0x80001300
+name = "t1_main"
+
+[[func]]
+vram = 0x80001CD4
+name = "t1_boot_main"
+
+# libultra the runtime replaces by name, which n64sym's signatures don't match in this older libultra: found by what
+# each calls and which registers it touches, and where it sits beside the functions of its file.
+
+[[func]]
+vram = 0x8009D570
+name = "osInitialize"
+
+[[func]]
+vram = 0x8009E260
+name = "osCreatePiManager"
+
+[[func]]
+vram = 0x800A0D00
+name = "osCreateViManager"
+
+[[func]]
+vram = 0x8009EB20
+name = "osContInit"
+
+[[func]]
+vram = 0x8009E984
+name = "osContGetReadData"
+
+[[func]]
+vram = 0x8009F250
+name = "osPfsInitPak"
+
+[[func]]
+vram = 0x800A1760
+name = "osPiStartDma"
+
+[[func]]
+vram = 0x800A4C50
+name = "osAiSetFrequency"
+
+[[func]]
+vram = 0x800A4F00
+name = "osAiSetNextBuffer"
+
+[[func]]
+vram = 0x800AFD50
+name = "osCartRomInit"
+
+# Their internals, named for the reader; nothing calls them once the functions above are replaced. The PI's access
+# queue is the same code as the SI's, so n64sym's signatures gave it the SI's names.
+
+[[func]]
+vram = 0x8009EA2C
+name = "__osPackReadData"
+
+[[func]]
+vram = 0x8009ED18
+name = "__osContGetInitData"
+
+[[func]]
+vram = 0x800A0E88
+name = "viMgrMain"
+
+[[func]]
+vram = 0x800A6030
+name = "__osTimerServicesInit"
+
+[[func]]
+vram = 0x800A60BC
+name = "__osTimerInterrupt"
+
+[[func]]
+vram = 0x800A6FE0
+name = "__osViInit"
+
+[[func]]
+vram = 0x800A6720
+name = "__osDevMgrMain"
+
+[[func]]
+vram = 0x800A72D0
+name = "osEPiRawStartDma"
+
+[[func]]
+vram = 0x800AB070
+name = "osPiGetCmdQueue"
+
+[[func]]
+vram = 0x800A12A0
+name = "_VirtualToPhysicalTask"
+
+[[func]]
+vram = 0x800A7130
+name = "__osPiCreateAccessQueue"
+
+[[func]]
+vram = 0x800A7180
+name = "__osPiGetAccess"
+
+[[func]]
+vram = 0x800A71C4
+name = "__osPiRelAccess"
+
+[[func]]
+vram = 0x800A8420
+name = "__osSiCreateAccessQueue"
+
+[[func]]
+vram = 0x800A84B4
+name = "__osSiRelAccess"
+
+# Development-hardware code at the text's end: writes to cop0 register 7, which a retail console doesn't have, and a
+# break. No call reaches it.
+
+[[func]]
+vram = 0x800B2300
+name = "t1_DevCop0"
