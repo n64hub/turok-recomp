@@ -21,7 +21,9 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$ROOT:/src" -w /src -e CCACHE_DIR=/sr
     # The ports CMake finds and ninja depends on, in the image's own cache, which goes with the container (seconds).
     # They are downloaded from GitHub each time, so a failed download is said, not left as a build that stops silently.
     embuilder build sdl2-mt freetype-legacysjlj > build/embuilder.log 2>&1 || { tail -20 build/embuilder.log; exit 1; }
-    [ -f build/web/build.ninja ] || emcmake cmake -S . -B build/web -G Ninja -DCMAKE_BUILD_TYPE=Release $* > build/web-configure.log 2>&1 ||
+    # Configured again once src/rt64_shaders.txt is newer than the build: CMakeLists.txt takes the list only if it
+    # exists when CMake runs, so a build configured before it was recorded would go on without it.
+    [ -f build/web/build.ninja ] && ! [ src/rt64_shaders.txt -nt build/web/build.ninja ] || emcmake cmake -S . -B build/web -G Ninja -DCMAKE_BUILD_TYPE=Release $* > build/web-configure.log 2>&1 ||
         { tail -20 build/web-configure.log; rm -f build/web/build.ninja; exit 1; }
     ninja -C build/web -j$CPUS TurokRecompiled > build/web-build.log 2>&1 ||
         { grep -E ' error|FAILED|undefined' build/web-build.log | head -30; exit 1; }
