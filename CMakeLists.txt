@@ -45,8 +45,8 @@ if (EMSCRIPTEN)
     add_link_options(-pthread -fwasm-exceptions -mtail-call)
     # ccache when it is on PATH, hitting across checkouts (its header says how).
     include(${CMAKE_SOURCE_DIR}/lib/N64Recomp-browser/frontend/build_speed.cmake)
-    # The shaders the page specializes at build time and builds before the game needs them, in sections: the boot's
-    # before the first frame, the rest as the game first draws them (src/rt64_shaders.txt says how it was recorded).
+    # The shaders the page specializes at build time and builds before the game needs them (src/rt64_shaders.txt says
+    # when, and how it was recorded).
     if (EXISTS ${CMAKE_SOURCE_DIR}/src/rt64_shaders.txt)
         set(RT64_PREBUILT_SHADER_LIST ${CMAKE_SOURCE_DIR}/src/rt64_shaders.txt)
     endif()
