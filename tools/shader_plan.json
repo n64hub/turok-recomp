@@ -13,7 +13,11 @@
   "reached as a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked,",
   "turned and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the bosses",
   "and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults",
-  "means recording again."
+  "means recording again.",
+  "",
+  "Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level",
+  "sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC). Recording again leaves it out: add it",
+  "back."
  ],
  "load": [
   [
