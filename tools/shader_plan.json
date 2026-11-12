@@ -2,24 +2,28 @@
  "page": "TurokRecompiled.html",
  "header": [
   "The RT64 shaders the web page builds: one shader description a line, other mode L and H, color combiner L and H,",
-  "flags, in hex. RT64 specializes each one's WGSL when the page is built and builds them with the game waiting: those",
-  "above the first \"section\" line before the game starts, and a section's when the game first draws with its shaders, so",
+  "flags, in hex. RT64 specializes each one's WGSL when the page is built and builds them before the game starts, so",
   "that nothing draws with the ubershader, which integrated graphics can't afford (N64Recomp-browser's docs/porting.md,",
-  "Prebuilt shader lists).",
+  "Prebuilt shader lists). The list is one section, with no \"section\" line: the first level's plan section is \"boot\":",
+  "true. Firefox builds a later section only when a frame first asks for 4 of its shaders that aren't built, and the",
+  "first level asks for the few it doesn't share with the boot one at a time, so as a section of its own each was",
+  "built in line, the game waiting 0.1-0.6 s in the middle of the level (N64Recomp-browser's plays.jsonl, t1 in Firefox",
+  "at 2026-11-12 19:21 and 19:49 UTC, never a round for the section).",
   "",
   "Recorded by code, not by playing: node lib/N64Recomp-browser/tools/record_shaders.mjs tools/shader_plan.json build/web",
-  "roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is the",
-  "launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game, reached as",
-  "a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked, turned,",
-  "changing weapon and firing the bow about it, the map, and the pause menu. Not recorded: the levels past the first's",
-  "start, the bosses and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of",
-  "those defaults means recording again.",
+  "roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page: the launcher, the boot",
+  "(the legal screen, the logos, the intro), the title menu and A through it to a new game, reached as a player does",
+  "(tools/survey.js), then the first level: its fly-over, then the player walked, turned, changing weapon and firing the",
+  "bow about it, the map, and the pause menu. Not recorded: the levels past the first's start, the bosses and the",
+  "cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults means",
+  "recording again.",
   "",
-  "Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level",
-  "sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC); 00000000 00242c1f, 0c184340 00102cff",
-  "and 0c184240 00142c1f (level1), which a play in the first level reaches by turning and looking up with the mouse and",
-  "firing with its button, and the plan, which turns with the keys and never uses the mouse, doesn't. Recording again",
-  "leaves them out: add them back."
+  "Added by hand, all in the first level: 00504340 0008ac1f, which the plan's walk doesn't reach and a longer play about",
+  "the first level sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC); 00000000 00242c1f,",
+  "0c184340 00102cff and 0c184240 00142c1f, which a play in the first level reaches by turning and looking up with the",
+  "mouse and firing with its button, and the plan, which turns with the keys and never uses the mouse, doesn't; 00504340",
+  "00102c1f, which a Firefox play of tools/play_plan.json reached 136 s in (t1 at 2026-11-12 19:49 UTC) and the plan",
+  "doesn't. Recording again leaves them out: add them back."
  ],
  "load": [
   [
@@ -95,6 +99,7 @@
  "sections": [
   {
    "name": "level1",
+   "boot": true,
    "steps": [
     [
      "wait",
