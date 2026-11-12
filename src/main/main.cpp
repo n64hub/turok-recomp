@@ -382,12 +382,13 @@ static bool get_n64_input(int player_index, uint16_t* buttons_out, float* x_out,
     bool ret = recompinput::profiles::get_n64_input(player_index, buttons_out, x_out, y_out);
     // Mouse look: the game turns and looks with the control stick, so the mouse's movement since the last poll is
     // added to it, 20 pixels a full deflection at 100% sensitivity (General, Mouse Sensitivity; 0 turns it off and
-    // leaves the cursor free). The left button fires (Z): RecompFrontend binds no mouse buttons.
+    // leaves the cursor free). The game looks down with the stick pushed up, as a plane's stick, so the mouse moved up
+    // pushes it down. The left button fires (Z): RecompFrontend binds no mouse buttons.
     if (player_index == 0 && recompui::config::general::get_mouse_sensitivity() != 0 && !recompinput::game_input_disabled()) {
         float dx = 0.0f, dy = 0.0f;
         recompinput::get_mouse_deltas(&dx, &dy);
         *x_out = std::clamp(*x_out + dx / 20.0f, -1.0f, 1.0f);
-        *y_out = std::clamp(*y_out - dy / 20.0f, -1.0f, 1.0f);
+        *y_out = std::clamp(*y_out + dy / 20.0f, -1.0f, 1.0f);
         if (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
             *buttons_out |= 0x2000; // Z
             ret = true;

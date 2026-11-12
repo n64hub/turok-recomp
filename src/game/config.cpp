@@ -15,7 +15,8 @@
 // change weapon and L shows the map, as in the later games. Here that is the layout a shooter has today: walking on the
 // left stick (and WASD), looking on the right stick (and the arrow keys, and the mouse: src/main/main.cpp), firing on
 // the right trigger (and the left mouse button), jumping on the bottom face button (and Space), the weapons on the
-// shoulder buttons (Q and E) and the map on the top face button (Tab).
+// shoulder buttons (Q and E) and the map on the top face button (Tab). The game looks down with the stick pushed up, as
+// a plane's stick, so the up arrow and the right stick pushed up push the game's stick down: up looks up.
 static void set_default_bindings() {
     using recompinput::GameInput;
     using recompinput::InputField;
@@ -32,8 +33,8 @@ static void set_default_bindings() {
     key(GameInput::C_RIGHT, { SDL_SCANCODE_D });
     key(GameInput::X_AXIS_NEG, { SDL_SCANCODE_LEFT });
     key(GameInput::X_AXIS_POS, { SDL_SCANCODE_RIGHT });
-    key(GameInput::Y_AXIS_POS, { SDL_SCANCODE_UP });
-    key(GameInput::Y_AXIS_NEG, { SDL_SCANCODE_DOWN });
+    key(GameInput::Y_AXIS_NEG, { SDL_SCANCODE_UP });
+    key(GameInput::Y_AXIS_POS, { SDL_SCANCODE_DOWN });
     key(GameInput::Z, { SDL_SCANCODE_LCTRL });
     key(GameInput::R, { SDL_SCANCODE_SPACE });
     key(GameInput::A, { SDL_SCANCODE_E });
@@ -54,8 +55,8 @@ static void set_default_bindings() {
     pad(GameInput::C_RIGHT, { InputField::controller_analog(SDL_CONTROLLER_AXIS_LEFTX, true) });
     pad(GameInput::X_AXIS_NEG, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTX, false) });
     pad(GameInput::X_AXIS_POS, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTX, true) });
-    pad(GameInput::Y_AXIS_POS, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTY, false) });
-    pad(GameInput::Y_AXIS_NEG, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTY, true) });
+    pad(GameInput::Y_AXIS_NEG, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTY, false) });
+    pad(GameInput::Y_AXIS_POS, { InputField::controller_analog(SDL_CONTROLLER_AXIS_RIGHTY, true) });
     pad(GameInput::Z, { InputField::controller_analog(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, true) });
     pad(GameInput::R, { InputField::controller_digital(recompinput::SDL_CONTROLLER_BUTTON_SOUTH),
         InputField::controller_analog(SDL_CONTROLLER_AXIS_TRIGGERLEFT, true) });

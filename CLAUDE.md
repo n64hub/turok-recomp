@@ -61,8 +61,10 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - It does its DMA through libultra's PI manager (osPiStartDma), unlike the later games' own DMA threads.
 - It saves to a Controller Pak in port 1.
 - It walks and strafes on the C buttons and turns and looks with the stick; Z fires, R jumps, A and B change weapon
-  (seen in the first level with `--input`), as the later games do. `src/game/config.cpp` binds a shooter's layout to
-  them and `src/main/main.cpp` turns the mouse into the stick and its left button into Z.
+  (seen in the first level with `--input`), as the later games do. It looks down with the stick pushed up, as a
+  plane's stick (seen on the page). `src/game/config.cpp` binds a shooter's layout to them, the right stick and the up
+  arrow pushing the stick down so that up looks up, and `src/main/main.cpp` turns the mouse into the stick, the same
+  way round, and its left button into Z.
 - Its code is compiled for the FPU's FR=0 mode (32-bit registers, a double in an even/odd pair: no double operation
   names an odd register, and mtc1/mfc1 move the halves), the runtime's default, unlike the later games: it doesn't call
   the engine's `turok::set_fpu_mode`. In FR=1 its doubles read wrong (the legal screen's timer reads 0 and the screen
