@@ -22,7 +22,7 @@ function(t1_patch_dir root name out)
     if (NOT lines)
         message(FATAL_ERROR "${name}: ${project} isn't in lib/N64Recomp-browser/patches/patches.txt")
     endif()
-    string(REGEX REPLACE "^[^ ]+ +([^ ]+).*" "\1" dir "${lines}")
+    string(REGEX REPLACE "^[^ ]+ +([^ ]+).*" "\\1" dir "${lines}")
     set(${out} "${root}/lib/${dir}" PARENT_SCOPE)
 endfunction()
 
