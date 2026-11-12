@@ -10,6 +10,7 @@
 #include "recompui/config.h"
 #include "util/file.h"
 #include "turok1.h"
+#include "turok_engine.h"
 
 // The game walks and strafes on the C buttons and turns and looks with the control stick; Z fires, R jumps, A and B
 // change weapon and L shows the map, as in the later games. Here that is the layout a shooter has today: walking on the
@@ -88,7 +89,9 @@ void t1::init_config() {
     general_options.has_mouse_sensitivity = true;
     recompui::config::create_general_tab(general_options);
     recompui::config::create_controls_tab();
-    recompui::config::create_graphics_tab();
+    // RT64 copies no frame into RDRAM: the game never reads a frame it drew, nor writes into one (lib/turok-engine's
+    // docs/render_to_ram.md). Its Copy Frames to RAM option turns the copy back on.
+    turok::add_copy_frames_option(recompui::config::create_graphics_tab());
     recompui::config::create_sound_tab();
     recompui::config::create_mods_tab();
     recompui::config::finalize();
