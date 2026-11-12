@@ -1,2 +1,3 @@
 - In widescreen the messages are drawn whole in the middle of the picture: a low line, as the first level's "TO OPEN LEVEL PORTALS", no longer has its first words at the window's left edge and its last at the right.
 - With Framerate above Original, a cutscene's camera cut goes straight to the new shot: the Campaigner death scene no longer shows a frame of a flat tan field with one pillar between the rooftop and the hall.
+- The renderer no longer copies each frame back into the console's memory, which the game never reads, so each frame takes less work; Copy Frames to RAM on the Graphics tab, Off by default, turns the copy back on if something ever looks wrong without it.

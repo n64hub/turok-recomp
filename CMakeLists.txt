@@ -195,6 +195,7 @@ target_sources(TurokRecompiled PRIVATE
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/controller_pak.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/libultra.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/pi_dma.cpp
+    ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/render_to_ram.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/widescreen.cpp
 )
 if (T1_PATCHES)
