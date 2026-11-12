@@ -8,9 +8,9 @@
 # build/web roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is
 # the launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game,
 # reached as a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked,
-# turned and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the bosses
-# and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults
-# means recording again.
+# turned and firing the bow about it, the map, and the pause menu. Not recorded: the levels past the first's start, the
+# bosses and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those
+# defaults means recording again.
 #
 # Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level
 # sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC). Recording again leaves it out: add it
@@ -101,3 +101,4 @@ c8112478 001d2c1f fc26a004 1ffc93fc 188e000e
 c8112478 00192c1f fc26a004 1ffc93fc 1806008e
 c8112478 001c2c1f fc327fff fffff638 0800000a
 c8112478 001cac1f fc327fff fffff638 0800000a
+00507048 00082cff fcffffff fffe793c 08000008

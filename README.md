@@ -18,8 +18,8 @@ git or CI is made from one except the symbol names, addresses and sizes in `syms
 
 **Status:** released for Windows and Linux (`releases/`). The desktop build plays from boot through the intro and the
 title menu into the first level, with sound, and keyboard, mouse and gamepad input. The game hasn't been played past
-the first level's start yet. The map opens but its lines aren't drawn yet: the game draws them with the L3DEX line
-microcode, whose lines RT64 doesn't draw. The same game plays in a browser through WebGPU, at
+the first level's start yet. The map (Tab) draws its lines, which the game draws with the L3DEX line microcode
+(turok-engine's RT64 patches). The same game plays in a browser through WebGPU, at
 [n64hub.com/turok-dinosaur-hunter](https://n64hub.com/turok-dinosaur-hunter/) (`docs/web.md`).
 
 ## Playing
