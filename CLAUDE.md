@@ -28,6 +28,10 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - `lib/`: `turok-engine`, upstream `rt64`, `N64ModernRuntime` and `RecompFrontend` at the commits N64Recomp-browser's
   web forks are built on, and `N64Recomp-browser`, whose `patches/` `tools/build_n64recomp.sh` and `CMakeLists.txt`
   apply to the other three. `runtime-patches/` are this game's own over them.
+  A checkout gets them with turok-engine's `tools/submodules.sh`, from a cache its checkouts on the machine share:
+  `bash lib/turok-engine/tools/submodules.sh` after `git submodule update --init lib/turok-engine` (at a pin that has
+  it), or that script from any turok-engine checkout, given this one's path. Never `git submodule update --init
+  --recursive`: it downloads them all again, about 20 minutes, most of it rt64's `contrib/dxc`.
 - `icons/`: drawn by `tools/icon.ps1` from plain text and shapes.
 - The web page: the `EMSCRIPTEN` branches of `CMakeLists.txt`, `tools/build_web.sh` (in `tools/docker/Dockerfile.web`)
   and the shader list `src/rt64_shaders.txt`, recorded by `tools/shader_plan.json`; `tools/play_plan.json` is the
