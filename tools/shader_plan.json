@@ -3,17 +3,17 @@
  "header": [
   "The RT64 shaders the web page builds: one shader description a line, other mode L and H, color combiner L and H,",
   "flags, in hex. RT64 specializes each one's WGSL when the page is built and builds them with the game waiting: those",
-  "above the first \"section\" line before the game starts, and a section's when the game first draws with its",
-  "shaders, so that nothing draws with the ubershader, which integrated graphics can't afford (N64Recomp-browser's",
-  "docs/porting.md, Prebuilt shader lists).",
+  "above the first \"section\" line before the game starts, and a section's when the game first draws with its shaders, so",
+  "that nothing draws with the ubershader, which integrated graphics can't afford (N64Recomp-browser's docs/porting.md,",
+  "Prebuilt shader lists).",
   "",
-  "Recorded by code, not by playing: node lib/N64Recomp-browser/tools/record_shaders.mjs tools/shader_plan.json",
-  "build/web roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is",
-  "the launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game,",
-  "reached as a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked,",
-  "turned and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the bosses",
-  "and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those defaults",
-  "means recording again.",
+  "Recorded by code, not by playing: node lib/N64Recomp-browser/tools/record_shaders.mjs tools/shader_plan.json build/web",
+  "roms/turok1.us.z64 src/rt64_shaders.txt (its header says how), on tools/build_web.sh's page. Section 0 is the",
+  "launcher, the boot (the legal screen, the logos, the intro), the title menu and A through it to a new game, reached as",
+  "a player does (tools/survey.js). Section level1 is the first level: its fly-over, then the player walked, turned,",
+  "changing weapon and firing the bow about it, and the pause menu. Not recorded: the levels past the first's start, the",
+  "bosses and the cutscenes. Flags follow settings (filtering, HDR, MSAA, upscaling), so a change to one of those",
+  "defaults means recording again.",
   "",
   "Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level",
   "sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC). Recording again leaves it out: add it",
@@ -73,9 +73,9 @@
   ],
   [
    "pressUntil",
-   "Space",
-   " ",
-   32,
+   "KeyE",
+   "e",
+   69,
    150,
    2000,
    "t1.state() == 4",
@@ -104,23 +104,23 @@
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyD",
-     "d",
-     68,
+     "ArrowRight",
+     "ArrowRight",
+     39,
      600
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
@@ -129,37 +129,37 @@
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyA",
-     "a",
-     65,
+     "ArrowLeft",
+     "ArrowLeft",
+     37,
      1200
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
@@ -168,30 +168,30 @@
     ],
     [
      "hold",
-     "KeyD",
-     "d",
-     68,
+     "ArrowRight",
+     "ArrowRight",
+     39,
      1500
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      4000
     ],
     [
      "hold",
-     "Space",
-     " ",
-     32,
+     "KeyE",
+     "e",
+     69,
      300
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      2000
     ],
     [
@@ -200,23 +200,23 @@
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyD",
-     "d",
-     68,
+     "ArrowRight",
+     "ArrowRight",
+     39,
      600
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
@@ -225,37 +225,37 @@
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyA",
-     "a",
-     65,
+     "ArrowLeft",
+     "ArrowLeft",
+     37,
      1200
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      3000
     ],
     [
      "hold",
-     "KeyQ",
-     "q",
-     81,
+     "ControlLeft",
+     "Control",
+     17,
      150
     ],
     [
@@ -264,30 +264,30 @@
     ],
     [
      "hold",
-     "KeyD",
-     "d",
-     68,
+     "ArrowRight",
+     "ArrowRight",
+     39,
      1500
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      4000
     ],
     [
      "hold",
-     "Space",
-     " ",
-     32,
+     "KeyE",
+     "e",
+     69,
      300
     ],
     [
      "hold",
-     "ArrowUp",
-     "ArrowUp",
-     38,
+     "KeyW",
+     "w",
+     87,
      2000
     ],
     [
