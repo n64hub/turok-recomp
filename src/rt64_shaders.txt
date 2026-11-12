@@ -13,8 +13,10 @@
 # defaults means recording again.
 #
 # Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level
-# sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC). Recording again leaves it out: add it
-# back.
+# sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC); 00000000 00242c1f, 0c184340 00102cff
+# and 0c184240 00142c1f (level1), which a play in the first level reaches by turning and looking up with the mouse and
+# firing with its button, and the plan, which turns with the keys and never uses the mouse, doesn't. Recording again
+# leaves them out: add them back.
 c81049d8 0018ec1f fc309604 5ffefff8 0ccb540e
 c8112078 0018ec1f fc327fff fffff638 0800000e
 c8112078 0018ac1f fc1217ff fffffe38 088a000e
@@ -93,8 +95,11 @@ c81049d8 0018ec1f fc309604 5ffefff8 088a000a
 c8104b50 00182c1f fcff97ff fffffe38 0ccb540a
 c8112078 0018ac1f fc327fff fffff638 0800000a
 0c184240 00100c1f fc12abff fffffe38 04cf540b
+0c184340 00102cff fc12abff fffffe38 0ccf540b
+0c184240 00142c1f fc12abff fffffe38 0ccf540b
 00504340 000cac1f fcffffff fffdf6fb 0800000b
 00504340 0008ac1f fcffffff fffdf6fb 0800000b
+00000000 00242c1f fcffffff fffe793c 0003540b
 c8112438 001cac1f fc327fff fffff638 0800000a
 c8112438 001c2c1f fc327fff fffff638 0800000a
 c8112478 001d2c1f fc26a004 1ffc93fc 188e000e

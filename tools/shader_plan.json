@@ -16,8 +16,10 @@
   "those defaults means recording again.",
   "",
   "Added by hand: 00504340 0008ac1f (level1), which the plan's walk doesn't reach and a longer play about the first level",
-  "sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC). Recording again leaves it out: add it",
-  "back."
+  "sometimes does (N64Recomp-browser's plays.jsonl, t1 at 2026-11-12 05:28 UTC); 00000000 00242c1f, 0c184340 00102cff",
+  "and 0c184240 00142c1f (level1), which a play in the first level reaches by turning and looking up with the mouse and",
+  "firing with its button, and the plan, which turns with the keys and never uses the mouse, doesn't. Recording again",
+  "leaves them out: add them back."
  ],
  "load": [
   [
