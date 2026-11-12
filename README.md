@@ -17,10 +17,28 @@ git or CI is made from one except the symbol names, addresses and sizes in `syms
 (`syms/layout.toml`).
 
 **Status:** released for Windows and Linux (`releases/`). The desktop build plays from boot through the intro and the
-title menu into the first level, with sound, and keyboard and gamepad input. The game hasn't been played past the first
-level's start yet. Widescreen (the Expand aspect ratio) widens the 3D to the window and puts the HUD at its sides. The map (L) opens but its lines aren't drawn
-yet: the game draws them with the L3DEX line microcode, whose lines RT64 doesn't draw. The same game plays in a browser through WebGPU, at
+title menu into the first level, with sound, and keyboard, mouse and gamepad input. The game hasn't been played past
+the first level's start yet. The map opens but its lines aren't drawn yet: the game draws them with the L3DEX line
+microcode, whose lines RT64 doesn't draw. The same game plays in a browser through WebGPU, at
 [n64hub.com/turok-dinosaur-hunter](https://n64hub.com/turok-dinosaur-hunter/) (`docs/web.md`).
+
+## Playing
+
+- **Widescreen:** the Expand aspect ratio (Graphics tab) widens the 3D to the window and puts the HUD at its sides.
+- **Controls**, all rebindable on the Controls tab:
+
+  | | Keyboard and mouse | Controller |
+  |---|---|---|
+  | Move and strafe | W A S D | left stick |
+  | Look | mouse, or the arrow keys | right stick |
+  | Fire | left mouse button, or Left Ctrl | right trigger |
+  | Jump | Space | bottom face button, or the left trigger |
+  | Change weapon | Q and E | the shoulder buttons |
+  | Map | Tab | top face button |
+  | Pause | Enter | Start |
+
+  The mouse turns and looks as the right stick does, on from the first start (General, Mouse Sensitivity, 50%; 0
+  turns it off and leaves the cursor free). Settings saved by v0.1.x have it at 0: turn it up there.
 
 ## The ROM
 
