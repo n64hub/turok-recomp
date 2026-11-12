@@ -1,1 +1,0 @@
-- The map (Tab, or the controller's top face button) draws its lines: the level's outline, your arrow and the north pointer, at 4:3 and in widescreen
