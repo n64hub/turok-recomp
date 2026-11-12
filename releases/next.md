@@ -1,0 +1,1 @@
+- In widescreen the messages are drawn whole in the middle of the picture: a low line, as the first level's "TO OPEN LEVEL PORTALS", no longer has its first words at the window's left edge and its last at the right.

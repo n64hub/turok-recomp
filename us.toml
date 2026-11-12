@@ -51,8 +51,11 @@ value = 0x00000000
 # Widescreen (lib/turok-engine/src/widescreen.cpp, src/game/widescreen.cpp). The frame (func_800023EC, from the main
 # loop's func_80007E44) draws through the display list head in its graphics struct ($a0, the head at +0x1F810); the
 # main loop is done with the display list where it ends it, at 0x80007F48. The game's play (func_800036B0, the
-# graphics struct in $s1) draws the world, and from 0x800037F4 its HUD: the status bar's health, ammo and keys
-# (func_8007D544) and the messages (func_80083310).
+# graphics struct in $s1) draws the world, and from 0x800037F4 its HUD, the status bar's health, ammo and keys
+# (func_8007D544), to 0x80003828; then the messages (func_80083310), after the HUD's end: they are lines of letters
+# centred on the screen, and the bottom quarter's automatic anchoring would put a low line's left letters at the
+# window's left edge and its right ones at the right (the first level's "TO OPEN LEVEL PORTALS"), so they stay in the
+# middle of the window as they are at 4:3.
 [[patches.hook]]
 func = "func_800023EC"
 before_vram = 0x8000240C
@@ -70,7 +73,7 @@ text = "    { void turok_hud_begin(uint8_t*); turok_hud_begin(rdram); }"
 
 [[patches.hook]]
 func = "func_800036B0"
-before_vram = 0x80003830
+before_vram = 0x80003828
 text = "    { void turok_hud_end(uint8_t*); turok_hud_end(rdram); }"
 
 # The camera (func_80037E3C) has made its float view-projection matrix, at 0x801195F4, which the culling reads, and
