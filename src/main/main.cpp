@@ -8,6 +8,7 @@
 #include <array>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 #include <cinttypes>
 #include <filesystem>
 #include <chrono>
@@ -352,8 +353,8 @@ static std::string game_thread_name(const OSThread* t) {
 }
 
 // --input <file> (development): scripted port 1 input for unattended runs. Each line is "<seconds> <buttons hex> [x y]",
-// seconds counted from the game's first input read, and the last line whose time has passed is held. Lines starting
-// with # are comments.
+// seconds counted from the game's first input read, and the last line whose time has passed is held; while that line
+// presses nothing, the keyboard and controllers play as usual. Lines starting with # are comments.
 struct ScriptedInput {
     double at;
     uint32_t buttons;
@@ -379,16 +380,33 @@ static void load_input_script(const char* path) {
 
 static bool get_n64_input(int player_index, uint16_t* buttons_out, float* x_out, float* y_out) {
     bool ret = recompinput::profiles::get_n64_input(player_index, buttons_out, x_out, y_out);
+    // Mouse look: the game turns and looks with the control stick, so the mouse's movement since the last poll is
+    // added to it, 20 pixels a full deflection at 100% sensitivity (General, Mouse Sensitivity; 0 turns it off and
+    // leaves the cursor free). The left button fires (Z): RecompFrontend binds no mouse buttons.
+    if (player_index == 0 && recompui::config::general::get_mouse_sensitivity() != 0 && !recompinput::game_input_disabled()) {
+        float dx = 0.0f, dy = 0.0f;
+        recompinput::get_mouse_deltas(&dx, &dy);
+        *x_out = std::clamp(*x_out + dx / 20.0f, -1.0f, 1.0f);
+        *y_out = std::clamp(*y_out - dy / 20.0f, -1.0f, 1.0f);
+        if (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+            *buttons_out |= 0x2000; // Z
+            ret = true;
+        }
+    }
     if (!input_script.empty() && player_index == 0) {
         static const auto start = std::chrono::steady_clock::now();
         double now = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+        const ScriptedInput* held = nullptr;
         for (const ScriptedInput& in : input_script) {
             if (in.at <= now) {
-                *buttons_out = (uint16_t)in.buttons;
-                *x_out = in.x;
-                *y_out = in.y;
-                ret = true;
+                held = &in;
             }
+        }
+        if (held != nullptr && (held->buttons != 0 || held->x != 0.0f || held->y != 0.0f)) {
+            *buttons_out = (uint16_t)held->buttons;
+            *x_out = held->x;
+            *y_out = held->y;
+            ret = true;
         }
     }
     return ret;
