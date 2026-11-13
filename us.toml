@@ -83,6 +83,16 @@ func = "func_80037E3C"
 before_vram = 0x800385E0
 text = "    { void turok_widen_culling(uint8_t*, uint32_t); turok_widen_culling(rdram, 0x801195F4); }"
 
+# The camera's view pyramid (5 points from sp+0xC0: the eye, then the far corners from the field of view), made in its
+# own space and moved into the world (func_800156A4) a point a turn of the loop at 0x80038A0C, its side planes
+# (func_80084740) and bounding box (func_80018A18) taken from it for the level's culling: widened, as the matrix is,
+# on the loop's first turn (a1 still at sp+0xC0), before any point is moved. Without it a 21:9 picture's cliff walls
+# stopped on a vertical line short of the window's sides, the fog colour past them.
+[[patches.hook]]
+func = "func_80037E3C"
+before_vram = 0x80038A0C
+text = "    if ((uint32_t)ctx->r5 == (uint32_t)ctx->r29 + 0xC0) { void turok_widen_frustum(uint8_t*, uint32_t, uint32_t); turok_widen_frustum(rdram, (uint32_t)ctx->r29 + 0xC0, 5); }"
+
 # The menus go the way the keys and sticks are pushed. The game looks down with its stick pushed up, as a plane's stick,
 # so src/game/config.cpp binds the up arrow and the right stick pushed up to the stick pushed down, and src/main/main.cpp
 # adds the mouse the same way: up looks up. The menus' up (func_80006770) and down (func_8000658C), after the D-pad and
