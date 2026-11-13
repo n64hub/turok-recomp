@@ -25,6 +25,8 @@ the first level's start yet. The map (Tab) draws its lines, which the game draws
 ## Playing
 
 - **Widescreen:** the Expand aspect ratio (Graphics tab) widens the 3D to the window and puts the HUD at its sides.
+- **One player:** the game has no multiplayer, so it is played on one controller, port 1's, and every pad and the
+  keyboard play it (RecompFrontend's single-player mode, `src/main/main.cpp`): there are no ports to give each pad.
 - **Controls**, all rebindable on the Controls tab:
 
   | | Keyboard and mouse | Controller |
