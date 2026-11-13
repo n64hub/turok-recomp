@@ -82,3 +82,18 @@ text = "    { void turok_hud_end(uint8_t*); turok_hud_end(rdram); }"
 func = "func_80037E3C"
 before_vram = 0x800385E0
 text = "    { void turok_widen_culling(uint8_t*, uint32_t); turok_widen_culling(rdram, 0x801195F4); }"
+
+# The menus go the way the keys and sticks are pushed. The game looks down with its stick pushed up, as a plane's stick,
+# so src/game/config.cpp binds the up arrow and the right stick pushed up to the stick pushed down, and src/main/main.cpp
+# adds the mouse the same way: up looks up. The menus' up (func_80006770) and down (func_8000658C), after the D-pad and
+# C buttons, ask the stick through the control bindings the game looks with: func_80051914 for the stick pushed up and
+# func_80051944 for it pushed down. So up moved their cursor down; here each asks the other one, which the look leaves
+# as it was.
+[[patches.instruction]]
+func = "func_80006770"
+vram = 0x80006880
+value = 0x0C014651
+[[patches.instruction]]
+func = "func_8000658C"
+vram = 0x8000669C
+value = 0x0C014645
