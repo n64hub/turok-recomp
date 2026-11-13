@@ -20,7 +20,10 @@
 # 0c184340 00102cff and 0c184240 00142c1f, which a play in the first level reaches by turning and looking up with the
 # mouse and firing with its button, and the plan, which turns with the keys and never uses the mouse, doesn't; 00504340
 # 00102c1f, which a Firefox play of tools/play_plan.json reached 136 s in (t1 at 2026-11-12 19:49 UTC) and the plan
-# doesn't. Recording again leaves them out: add them back.
+# doesn't; and the seven from c8112078 00192c1f to c81049d8 0018ec1f at the end, which the first level has drawn at
+# the window's sides since the view the rooms are culled against was widened (main 85a8640), and every play of the
+# boot since has missed about a minute in (t1 at 2026-11-13 09:52-10:55 UTC). Recording again leaves them out: add
+# them back.
 c81049d8 0018ec1f fc309604 5ffefff8 0ccb540e
 c8112078 0018ec1f fc327fff fffff638 0800000e
 c8112078 0018ac1f fc1217ff fffffe38 088a000e
@@ -111,3 +114,10 @@ c8112478 00192c1f fc26a004 1ffc93fc 1806008e
 c8112478 001c2c1f fc327fff fffff638 0800000a
 c8112478 001cac1f fc327fff fffff638 0800000a
 00507048 00082cff fcffffff fffe793c 08000008
+c8112078 00192c1f fc26a004 1ffc93fc 1806008e
+c8112078 0018ac1f fcff96ac f0fcfe38 088a000e
+c81041f8 0018ac1f fc327fff ff17f63f 0800000e
+c81041f8 0018ac1f fcff97ff ff14fe3f 088a000e
+c8112078 0018ac1f fc1216ac f0fffe38 088a000e
+c81041f8 0018ac1f fc1217ff ff17fe3f 088a000e
+c81049d8 0018ec1f fc309604 5ffefff8 088a000e
