@@ -1,0 +1,1 @@
+- Starting the game with Enter on the launcher's Start Game no longer opens the Controller Pak manager: Enter is the game's Start, and Start still held from the launcher is now ignored until it is let go.
