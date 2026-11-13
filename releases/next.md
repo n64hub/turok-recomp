@@ -1,1 +1,0 @@
-- In a window wider than 16:9, the level is drawn out to the window's sides while you turn: the first level's cliff walls no longer stop on a vertical line short of the edges, with the fog colour past them.
