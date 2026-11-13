@@ -415,6 +415,25 @@ static bool get_n64_input(int player_index, uint16_t* buttons_out, float* x_out,
             turok::add_mouse_motion(held->mouse_x, held->mouse_y);
         }
     }
+    // The game opens its Controller Pak manager when Start is down at its first input read, as holding Start at
+    // power-on does on the console. The launcher's Start Game is pressed with Enter, which is Start, and is often still
+    // down then, so a Start held without a break since the game's first read is dropped until it is let go.
+    if (player_index == 0) {
+        static bool first_read = true;
+        static bool start_from_launcher = false;
+        if (first_read) {
+            first_read = false;
+            start_from_launcher = (*buttons_out & 0x1000) != 0;
+        }
+        if (start_from_launcher) {
+            if (*buttons_out & 0x1000) {
+                *buttons_out &= ~0x1000;
+            }
+            else {
+                start_from_launcher = false;
+            }
+        }
+    }
     return ret;
 }
 
