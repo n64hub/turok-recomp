@@ -67,8 +67,9 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - It walks and strafes on the C buttons and turns and looks with the stick; Z fires, R jumps, A and B change weapon
   (seen in the first level with `--input`), as the later games do. It looks down with the stick pushed up, as a
   plane's stick (seen on the page). `src/game/config.cpp` binds a shooter's layout to them, the right stick and the up
-  arrow pushing the stick down so that up looks up, and `src/main/main.cpp` turns the mouse into the stick, the same
-  way round, and its left button into Z. The menus ask the stick through the same bindings, and us.toml swaps their
+  arrow pushing the stick down so that up looks up, and `src/main/main.cpp` hands the mouse's movement to the engine's
+  mouse look, which us.toml's hook in the player's control on foot (func_80052B1C) adds to the yaw and pitch, and
+  makes its left button Z. The menus ask the stick through the same bindings, and us.toml swaps their
   questions so that up moves their cursor up.
 - Its code is compiled for the FPU's FR=0 mode (32-bit registers, a double in an even/odd pair: no double operation
   names an odd register, and mtc1/mfc1 move the halves), the runtime's default, unlike the later games: it doesn't call
