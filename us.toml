@@ -92,3 +92,29 @@ text = "    { void turok_widen_culling(uint8_t*, uint32_t); turok_widen_culling(
 func = "func_80037E3C"
 before_vram = 0x80038A0C
 text = "    if ((uint32_t)ctx->r5 == (uint32_t)ctx->r29 + 0xC0) { void turok_widen_frustum(uint8_t*, uint32_t, uint32_t); turok_widen_frustum(rdram, (uint32_t)ctx->r29 + 0xC0, 5); }"
+
+# The menus go the way the keys and sticks are pushed. The game looks down with its stick pushed up, as a plane's stick,
+# so src/game/config.cpp binds the up arrow and the right stick pushed up to the stick pushed down, and src/main/main.cpp
+# adds the mouse the same way: up looks up. The menus' up (func_80006770) and down (func_8000658C), after the D-pad and
+# C buttons, ask the stick through the control bindings the game looks with: func_80051914 for the stick pushed up and
+# func_80051944 for it pushed down. So up moved their cursor down; here each asks the other one, which the look leaves
+# as it was.
+[[patches.instruction]]
+func = "func_80006770"
+vram = 0x80006880
+value = 0x0C014651
+[[patches.instruction]]
+func = "func_8000658C"
+vram = 0x8000669C
+value = 0x0C014645
+
+# Mouse look (lib/turok-engine/src/mouse_look.cpp): the mouse turns the view itself instead of being added to the stick.
+# The player's control on foot (func_80052B1C, its control struct in s0, the player's object saved at sp+0xB4) has just
+# made the target its pitch (the struct's +0x70, radians, growing upwards) moves towards, at +0x68, from the stick, so
+# that the look springs back level when the stick is let go, and is about to move the pitch: the engine adds the mouse's
+# movement to the yaw (the object's +0x64, radians, growing to the right) and the pitch and holds the target, within
+# the stick's own limits (-1.3614 and pi/2). The pitch is read into f12 before here, so it's read again.
+[[patches.hook]]
+func = "func_80052B1C"
+before_vram = 0x80053688
+text = "    { void turok_mouse_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_mouse_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.3613568f, 1.5707964f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"

@@ -352,13 +352,16 @@ static std::string game_thread_name(const OSThread* t) {
     return "[Game] " + std::to_string(t->id) + " (priority " + std::to_string(t->priority) + ")";
 }
 
-// --input <file> (development): scripted port 1 input for unattended runs. Each line is "<seconds> <buttons hex> [x y]",
-// seconds counted from the game's first input read, and the last line whose time has passed is held; while that line
-// presses nothing, the keyboard and controllers play as usual. Lines starting with # are comments.
+// --input <file> (development): scripted port 1 input for unattended runs. Each line is
+// "<seconds> <buttons hex> [x y [mouse x mouse y]]", seconds counted from the game's first input read, and the last line
+// whose time has passed is held; while that line presses nothing, the keyboard and controllers play as usual. The mouse
+// columns are a movement each input read, in counts as at 100% Mouse Sensitivity, for mouse look. Lines starting with #
+// are comments.
 struct ScriptedInput {
     double at;
     uint32_t buttons;
     float x, y;
+    float mouse_x, mouse_y;
 };
 static std::vector<ScriptedInput> input_script;
 
@@ -371,7 +374,7 @@ static void load_input_script(const char* path) {
     char line[256];
     while (fgets(line, sizeof(line), f) != nullptr) {
         ScriptedInput in{};
-        if (line[0] != '#' && sscanf(line, "%lf %x %f %f", &in.at, &in.buttons, &in.x, &in.y) >= 2) {
+        if (line[0] != '#' && sscanf(line, "%lf %x %f %f %f %f", &in.at, &in.buttons, &in.x, &in.y, &in.mouse_x, &in.mouse_y) >= 2) {
             input_script.push_back(in);
         }
     }
@@ -380,15 +383,14 @@ static void load_input_script(const char* path) {
 
 static bool get_n64_input(int player_index, uint16_t* buttons_out, float* x_out, float* y_out) {
     bool ret = recompinput::profiles::get_n64_input(player_index, buttons_out, x_out, y_out);
-    // Mouse look: the game turns and looks with the control stick, so the mouse's movement since the last poll is
-    // added to it, 20 pixels a full deflection at 100% sensitivity (General, Mouse Sensitivity; 0 turns it off and
-    // leaves the cursor free). The game looks down with the stick pushed up, as a plane's stick, so the mouse moved up
-    // pushes it down. The left button fires (Z): RecompFrontend binds no mouse buttons.
+    // Mouse look: the mouse's movement since the last poll goes to the engine, which turns the player's view by it in
+    // the game's own look code (us.toml, lib/turok-engine/src/mouse_look.cpp), as far as the mouse moved and at once,
+    // instead of making it a stick deflection the game turns at a rate (General, Mouse Sensitivity; 0 turns it off and
+    // leaves the cursor free). The left button fires (Z): RecompFrontend binds no mouse buttons.
     if (player_index == 0 && recompui::config::general::get_mouse_sensitivity() != 0 && !recompinput::game_input_disabled()) {
         float dx = 0.0f, dy = 0.0f;
         recompinput::get_mouse_deltas(&dx, &dy);
-        *x_out = std::clamp(*x_out + dx / 20.0f, -1.0f, 1.0f);
-        *y_out = std::clamp(*y_out + dy / 20.0f, -1.0f, 1.0f);
+        turok::add_mouse_motion(dx, dy);
         if (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
             *buttons_out |= 0x2000; // Z
             ret = true;
@@ -408,6 +410,9 @@ static bool get_n64_input(int player_index, uint16_t* buttons_out, float* x_out,
             *x_out = held->x;
             *y_out = held->y;
             ret = true;
+        }
+        if (held != nullptr && (held->mouse_x != 0.0f || held->mouse_y != 0.0f)) {
+            turok::add_mouse_motion(held->mouse_x, held->mouse_y);
         }
     }
     return ret;

@@ -1,0 +1,2 @@
+- The mouse turns the view directly, as in a PC shooter: a small movement is no longer lost in the stick's dead zone, the view turns by as much as the mouse moves, and looking up or down stays where the mouse put it instead of springing back level. Mouse Sensitivity sets how far it turns.
+- In the menus the up arrow (and the right stick pushed up) moves the cursor up and the down arrow down: they went the other way.
