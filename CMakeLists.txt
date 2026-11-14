@@ -57,6 +57,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 set(RT64_STATIC TRUE)
 set(RT64_SDL_WINDOW_VULKAN TRUE)
+# With the map open (Tab) the game draws each frame in two RSP tasks, the level and then the map's lines on top, which
+# RT64 interpolates as one game frame with RT64_GAME_FRAME_WORKLOADS, on with Emscripten and here on the desktop too.
+# Without it each task is interpolated as a frame of its own, and a frame between the game's can be drawn from the
+# level alone, as Paper Mario's opening was in half its frames on one host (N64Recomp-browser's docs/new-recomp.md).
+set(RT64_GAME_FRAME_WORKLOADS ON)
 add_compile_definitions(HLSL_CPU)
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
