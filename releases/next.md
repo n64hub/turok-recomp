@@ -1,1 +1,0 @@
-- With the map open (Tab) and Frame Interpolation on, the frames it adds between the game's own are drawn from the level and the map together, as the browser version draws them, rather than each on its own.
