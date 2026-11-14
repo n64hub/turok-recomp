@@ -1,5 +1,6 @@
 {
  "page": "TurokRecompiled.html",
+ "padKeys": { "ControlLeft": 7, "Tab": 3, "KeyE": 5, "KeyQ": 4 },
  "header": [
   "The page's plan for N64Recomp-browser's tools/play_page.mjs, its regular play of about 2 minutes: the launcher, Load",
   "ROM on a new profile once the shader list Chrome builds behind it is done (Firefox builds none there and says so),",
@@ -7,7 +8,9 @@
   "state), then A (E) until the game starts, as a player does. The first level's fly-over plays 20 s, then the player",
   "walks (C-up, W), turns (the stick, the left and right arrows), changes weapon (A, E) and fires the bow (Z, Left Ctrl)",
   "about the level, and opens and closes the pause menu (Start, Enter). Its waits and holds are on the browser's clock:",
-  "the game keeps no clock of its own the survey reads yet."
+  "the game keeps no clock of its own the survey reads yet.",
+  "With --pad its padKeys are the pad buttons this game gives its keys (src/game/config.cpp): Left Ctrl is Z, the right",
+  "trigger; Tab is L, North; E is A, the right shoulder; Q is B, the left."
  ],
  "load": [
   [
