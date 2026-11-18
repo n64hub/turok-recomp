@@ -79,6 +79,14 @@ set(RT64_SDL_WINDOW_VULKAN TRUE)
 # Without it each task is interpolated as a frame of its own, and a frame between the game's can be drawn from the
 # level alone, as Paper Mario's opening was in half its frames on one host.
 set(RT64_GAME_FRAME_WORKLOADS ON)
+# The page's pairing options, on here too. A Turok level is blocks, each a mesh that never changes: without
+# RT64_SKIP_PLACE_SWAPS a block that came into view or took another level of detail could be paired with one that left,
+# in the frames RT64 draws between the game's, and was drawn partway from that one's place (slabs of cliff over the sky,
+# the background through holes at the picture's edge). RT64_SKIP_CAMERA_CUTS draws a cut to another shot as it is, not
+# halfway between the two, and RT64_SKIP_COLLAPSED_MATCHES never interpolates an object the game hides.
+set(RT64_SKIP_PLACE_SWAPS ON)
+set(RT64_SKIP_CAMERA_CUTS ON)
+set(RT64_SKIP_COLLAPSED_MATCHES ON)
 add_compile_definitions(HLSL_CPU)
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
