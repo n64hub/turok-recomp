@@ -8,7 +8,7 @@ built from your ROM like the desktop program, so it is never built in CI and nev
 What is the game's own stays here: the `EMSCRIPTEN` branches of `CMakeLists.txt` that make the game a page,
 `tools/build_web.sh` and the shader list (below). The rest is N64Recomp-browser's: `docs/porting.md` (WebGPU and the
 shaders, prebuilt shader lists, Emscripten), `docs/playing.md` (playing and measuring a page), `docs/forks.md` and
-`docs/findings.md`. Every play of this game's page is a line in N64Recomp-browser's `plays.jsonl`, never a record here.
+`docs/findings.md`.
 
 All of the game's code and data are in kseg0 (CLAUDE.md, Facts about the game), so unlike the later Turok games it
 needs no window for TLB-mapped addresses (`RECOMP_KUSEG_WINDOW`).
