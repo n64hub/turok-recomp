@@ -1,0 +1,21 @@
+# The save run of the save check (README.md, with tools/load_plan.txt): Start through the logos, START GAME and the
+# level's text into the first level (state word 0x80119534 = 0x4). Its save point's menu is then opened where the
+# player stands, as walking onto one would: the save request at 0x80119478, the menu handler's flag at 0x801196E8,
+# the Controller Pak screen's draw flag at 0x801196F8 and its fade (alpha 0 at 0x80119470, state 1 at the halfword
+# 0x80119474), over the pause screen (0x801193D8 = 1) the game draws it on. A on SAVE then saves to a new note, which
+# writes saves/controllerpak_1.mpk. Before it, the word at 0x8011940C, 100 in a new game, is set to 77: the note holds
+# it, and the load run checks it comes back from it.
+0 until 0x80119534 0xFFFFFFFF 0x4 120 Enter
+6 poke 0x8011940C 0x4D
+6 poke 0x80119478 1
+6 poke 0x801196E8 1
+6 poke 0x80119470 0
+6 poke 0x80119474 0x00010000
+6 poke 0x801196F8 1
+6 poke 0x801193D8 1
+8 shot pak
+8.5 key E 100
+9 saves changed 15
+11 shot saved
+11.5 key E 100
+13 end

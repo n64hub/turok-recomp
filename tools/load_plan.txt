@@ -1,0 +1,30 @@
+# The load run of the save check (README.md), after tools/save_plan.txt, the program started again in the same
+# folder: at the title (state word 0x80119534 = 0x3), Down to LOAD GAME and A open the Controller Pak screen, which
+# lists the note, and A on LOAD loads it into the first level (0x4). The word at 0x8011940C is then 77 only if it came
+# off the pak: a new game has 100 there, and the save run set it to 77 before it saved. Nothing is written by then.
+# Then the save point's menu is opened as in the save run, the word set to 78, and A on SAVE, Up to YES and A save
+# over the note through the check's links.
+0 until 0x80119534 0xFFFFFFFF 0x3 120
+2 key Down 100
+2.6 key E 100
+4.5 shot notes
+5 key E 100
+5.5 until 0x8011940C 0xFFFFFFFF 0x4D 60
+6 saves same
+6.5 until 0x80119534 0xFFFFFFFF 0x4 30
+8 shot loaded
+12 poke 0x8011940C 0x4E
+12 poke 0x80119478 1
+12 poke 0x801196E8 1
+12 poke 0x80119470 0
+12 poke 0x80119474 0x00010000
+12 poke 0x801196F8 1
+12 poke 0x801193D8 1
+14 shot pak
+14.5 key E 100
+16.5 shot overwrite
+17 key Up 100
+17.6 key E 100
+18 saves changed 15
+20 shot saved
+21 end

@@ -75,6 +75,11 @@ ROM with Load ROM, then Start Game.
 `syms/` is written from the unpacked ROM by `python3 lib/turok-engine/tools/gen_syms.py` (it needs
 `pip install spimdisasm`); run it again only when the engine's finder or `syms/names.toml` changes.
 
+`tools/save_plan.txt` and `tools/load_plan.txt` are the save check's plans, played by machine on the Linux build: a
+save made in the game's own menu, the program quit and started again in the same folder with `saves/` and its files
+behind symlinks, the save loaded and found in the game's memory, and a second save written through the links. Their
+headers say what each step does.
+
 ## Releases
 
 Each release is built where the ROM is, by `tools/release.sh` (its header says how), from the merge commit of a pull
