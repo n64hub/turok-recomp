@@ -106,6 +106,22 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/rt64 ${CMAKE_BINARY_DIR}/rt64)
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(${CMAKE_SOURCE_DIR}/lib/N64ModernRuntime)
 
+# The game reuses a display list's buffer once the RSP is done, as Turok 2, Turok 3 and Rage Wars on the same engine do,
+# so the page takes ULTRAMODERN_YIELDS_END_QUEUED_GRAPHICS (N64Recomp-browser's docs/forks.md, on with Emscripten from
+# its v0.192.0) out of ultramodern's definitions, as theirs do. Its early RSP done for a yield asked of a graphics task
+# still queued for RT64 let the game write over lists RT64 had yet to read: from v0.205.0 the page drew the first
+# level with render modes and combiners its own lists never set, and its plays met 44-149 shaders src/rt64_shaders.txt
+# hasn't (the shader plan met 164, against 81 with the define out, all of them on the list). Ignored, as upstream
+# ignores a yield, RT64 reads each list as the game wrote it. A pin older than
+# v0.192.0 has no such definition to take out.
+if (EMSCRIPTEN)
+    get_target_property(t1_ultramodern_definitions ultramodern COMPILE_DEFINITIONS)
+    if ("ULTRAMODERN_YIELDS_END_QUEUED_GRAPHICS=1" IN_LIST t1_ultramodern_definitions)
+        list(REMOVE_ITEM t1_ultramodern_definitions "ULTRAMODERN_YIELDS_END_QUEUED_GRAPHICS=1")
+        set_property(TARGET ultramodern PROPERTY COMPILE_DEFINITIONS ${t1_ultramodern_definitions})
+    endif()
+endif()
+
 if (EMSCRIPTEN)
     add_subdirectory(${CMAKE_SOURCE_DIR}/lib/N64Recomp-browser/frontend ${CMAKE_BINARY_DIR}/web_frontend)
     # fmt 11.1 (N64Recomp's) leans on <cstdlib> arriving through other headers, which Emscripten's libc++ doesn't do.
