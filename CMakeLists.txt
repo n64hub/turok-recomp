@@ -109,9 +109,10 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/lib/N64ModernRuntime)
 # The game reuses a display list's buffer once the RSP is done, as Turok 2, Turok 3 and Rage Wars on the same engine do,
 # so the page takes ULTRAMODERN_YIELDS_END_QUEUED_GRAPHICS (N64Recomp-browser's docs/forks.md, on with Emscripten from
 # its v0.192.0) out of ultramodern's definitions, as theirs do. Its early RSP done for a yield asked of a graphics task
-# still queued for RT64 let the game write over lists RT64 had yet to read: from v0.205.0 the first level drew with
-# render modes and combiners mixed from lists of different frames, and the page met 44-149 shaders its list never had,
-# against none before. Ignored, as upstream ignores a yield, the lists are read as the game wrote them. A pin older than
+# still queued for RT64 let the game write over lists RT64 had yet to read: from v0.205.0 the page drew the first
+# level with render modes and combiners its own lists never set, and its plays met 44-149 shaders src/rt64_shaders.txt
+# hasn't (the shader plan met 164, against 81 with the define out, all of them on the list). Ignored, as upstream
+# ignores a yield, RT64 reads each list as the game wrote it. A pin older than
 # v0.192.0 has no such definition to take out.
 if (EMSCRIPTEN)
     get_target_property(t1_ultramodern_definitions ultramodern COMPILE_DEFINITIONS)
