@@ -39,7 +39,7 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - Releases: `tools/release.sh` (Linux in `tools/docker/Dockerfile.linux`), each release's notes in `releases/`
   (README, Releases). Each change a player would notice adds a line to `releases/next.md`, and every fix is released:
   the work that lands one cuts the release once it merges, unasked, or waits for one already in flight, which carries
-  it (N64Recomp-browser's CLAUDE.md, Releasing). A release moves `releases/next.md` to `releases/v<version>.md`.
+  it. A release moves `releases/next.md` to `releases/v<version>.md`.
 - Comments beside the code, for how and why: each file's header. Read the header of the file you change and update
   it in the same commit.
 
