@@ -5,8 +5,9 @@
 #
 # The submodules and the build directory are cached together, keyed on the runner image, the submodule commits and
 # runtime-patches/ (the configure applies it to them). On an exact hit ninja finds the libraries up to date (the cache
-# keeps mtimes); otherwise the newest cache is restored, the submodules are updated in place and ninja rebuilds what
-# changed.
+# keeps mtimes); otherwise the newest cache from the same runner image is restored (from another, if it has none: its
+# system headers are others, so everything rebuilds), the submodules whose commits moved are updated in place and ninja
+# rebuilds what changed.
 #
 # turok-engine's CI calls this too (workflow_call, engine-ref): it builds this repo's main with lib/turok-engine at the
 # engine's commit. That run is the engine's, in its cache, so its cache keys name the game and the engine commit.
@@ -67,6 +68,7 @@ jobs:
         run: |
           prefix="build-v2-${ENGINE_REF:+t1-}$ImageOS-"
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
+          echo "image=$prefix$ImageVersion-" >> "$GITHUB_OUTPUT"
           echo "key=$prefix$ImageVersion-$(git ls-tree HEAD lib runtime-patches | git hash-object --stdin)${ENGINE_REF:+-$ENGINE_REF}" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
         id: cache
@@ -80,18 +82,34 @@ jobs:
             lib/turok-engine
             build
           key: ${{ steps.key.outputs.key }}
-          restore-keys: ${{ steps.key.outputs.prefix }}
-      # In parallel, retried, and cleaned, as a cache restored by prefix holds the submodules as older patches left
-      # them.
+          restore-keys: |
+            ${{ steps.key.outputs.image }}
+            ${{ steps.key.outputs.prefix }}
+      # Retried, as one transient "Empty reply from server" from a submodule host fails the whole build. Only the
+      # submodules whose commits aren't the ones wanted are updated and put back to them (cleaned, nested ones too):
+      # updating one rewrites every file in it, since a restored file's stat isn't the one its index holds, and ninja
+      # then rebuilds everything that reads them. The rest keep the cache's files and times, patched as the configure
+      # left them, which takes older patches out by itself; when lib/N64Recomp-browser moves, all are put back, so its
+      # patches go onto clean checkouts.
       - name: Submodules
         if: steps.cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
+          all="lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine"
+          git submodule init -q $all   # only the URLs: the superproject's .git/config is new, its .git/modules cached
+          moved=$(git submodule status --recursive $all | awk '!/^ / { split($2, p, "/"); print p[1] "/" p[2] }' | sort -u)
+          if grep -qx lib/N64Recomp-browser <<< "$moved"; then moved=$all; fi
+          echo "moved:" $moved
+          if [ -z "$moved" ]; then exit 0; fi
+          put_back() {
+            for m in $moved; do
+              git -C "$m" clean -fdq && git -C "$m" reset -q --hard &&
+                git -C "$m" submodule foreach --recursive -q 'git clean -fdq && git reset -q --hard' || return 1
+            done
+          }
           for i in 1 2 3; do
-            git -c protocol.version=2 submodule update --init --recursive --force --depth 1 --jobs 8 \
-                lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine &&
-              git submodule foreach --recursive -q git clean -fdq &&
-              git submodule foreach --recursive -q git reset -q --hard && exit 0
+            git -c protocol.version=2 submodule update --init --recursive --force --depth 1 --jobs 8 $moved &&
+              put_back && exit 0
             echo "attempt $i failed"; sleep $((i * 15))
           done
           exit 1
@@ -182,6 +200,7 @@ jobs:
         run: |
           prefix="build-v1-${ENGINE_REF:+t1-}$ImageOS-"
           echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
+          echo "image=$prefix$ImageVersion-" >> "$GITHUB_OUTPUT"
           echo "key=$prefix$ImageVersion-$(git ls-tree HEAD lib runtime-patches | git hash-object --stdin)${ENGINE_REF:+-$ENGINE_REF}" >> "$GITHUB_OUTPUT"
           echo "apt=apt-$ImageOS-$ImageVersion" >> "$GITHUB_OUTPUT"
       - uses: actions/cache@v4
@@ -192,17 +211,33 @@ jobs:
             lib
             build
           key: ${{ steps.key.outputs.key }}
-          restore-keys: ${{ steps.key.outputs.prefix }}
-      # Retried: one transient "Empty reply from server" from a submodule host otherwise fails the whole build. A cache
-      # restored by prefix holds the submodules as older patches left them: clean them, nested submodules too.
+          restore-keys: |
+            ${{ steps.key.outputs.image }}
+            ${{ steps.key.outputs.prefix }}
+      # Retried, as one transient "Empty reply from server" from a submodule host fails the whole build. Only the
+      # submodules whose commits aren't the ones wanted are updated and put back to them (cleaned, nested ones too):
+      # updating one rewrites every file in it, since a restored file's stat isn't the one its index holds, and ninja
+      # then rebuilds everything that reads them. The rest keep the cache's files and times, patched as the configure
+      # left them, which takes older patches out by itself; when lib/N64Recomp-browser moves, all are put back, so its
+      # patches go onto clean checkouts.
       - name: Submodules
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
+          all="lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine"
+          git submodule init -q $all   # only the URLs: the superproject's .git/config is new, its .git/modules cached
+          moved=$(git submodule status --recursive $all | awk '!/^ / { split($2, p, "/"); print p[1] "/" p[2] }' | sort -u)
+          if grep -qx lib/N64Recomp-browser <<< "$moved"; then moved=$all; fi
+          echo "moved:" $moved
+          if [ -z "$moved" ]; then exit 0; fi
+          put_back() {
+            for m in $moved; do
+              git -C "$m" clean -fdq && git -C "$m" reset -q --hard &&
+                git -C "$m" submodule foreach --recursive -q 'git clean -fdq && git reset -q --hard' || return 1
+            done
+          }
           for i in 1 2 3; do
-            git -c protocol.version=2 submodule update --init --recursive --force --depth 1 --jobs 8 \
-                lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine &&
-              git submodule foreach --recursive -q git clean -fdq &&
-              git submodule foreach --recursive -q git reset -q --hard && exit 0
+            git -c protocol.version=2 submodule update --init --recursive --force --depth 1 --jobs 8 $moved &&
+              put_back && exit 0
             echo "attempt $i failed"; sleep $((i * 15))
           done
           exit 1
