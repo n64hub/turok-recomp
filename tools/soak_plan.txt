@@ -1,0 +1,57 @@
+# Turok: Dinosaur Hunter's soak plan: one round through the game's scenes for the desktop soak, a play of its Linux
+# build by this plan for 140 s that fails on a crash, the program exiting or the picture standing still for 10 s. Each
+# line is a step at seconds since the program started: key <name> [ms held], down and up <name>, shot <name>, peek
+# <addr>, until <addr> <mask> <value> <timeout s> [key [ms]] (waits until the game's 32-bit word at addr, anded with
+# mask, is value, pressing key every 1.5 s meanwhile; the later steps move on by the wait, and a wait unmet fails the
+# play), and random <key>,... (one of them every 0.3-1.2 s) until random off. The keys are src/game/config.cpp's (Enter
+# Start, E A, Q B, W A S D the C buttons, the arrows the stick, Space R).
+#
+# A round: the boot, Start (Enter) through the legal screen and the intro to the title menu, Training and its Time
+# Challenge (the Tutorial opens behind a box that only some presses close), 18 s of random moves, turns, jumps and
+# weapon changes there, Start and YES to quit it, which goes back through the legal screen to the title, then Start
+# Game (its cursor is back on it) into the first level, the Hub ruins: its fly-over, 20 s of random input, and the
+# pause menu (Start) with its Options opened and left by EXIT, and random input to the end. The two levels are the
+# round's level change. The word at 0x80119534 is the main loop's state (tools/survey.js: 3 the title menu, 4 the
+# game, Training's too, 1 the legal screen); each `until` waits on it, so the round keeps step with a slow boot.
+10 until 0x80119534 0xFFFFFFFF 3 60 Enter
+11 shot title
+12 key Down
+13 key Down
+14 key E
+16 shot training-how
+17 key Down
+18 shot training-how-time
+19 key E
+20 until 0x80119534 0xFFFFFFFF 4 30
+21 shot training
+22 random W,A,S,D,Left,Right,Up,Down,Space,E,Q
+40 random off
+41 shot training2
+42 key Enter
+44 shot quit-prompt
+45 key Up
+46 shot quit-yes
+47 key Enter
+49 shot quitting
+50 until 0x80119534 0xFFFFFFFF 3 60 Enter
+51 shot title2
+52 until 0x80119534 0xFFFFFFFF 4 30 E
+53 shot level0
+63 shot flyover
+73 shot level1
+74 random W,A,S,D,Left,Right,Up,Down,Space,E,Q
+94 random off
+95 shot level2
+96 key Enter
+98 shot pause
+99 key Down
+100 key Enter
+102 shot options
+104 key Up
+105 shot options-exit
+106 key E
+108 shot options-back
+109 key Enter
+111 shot resumed
+112 peek 0x80119534
+113 random W,A,S,D,Left,Right,Up,Down,Space,E,Q
