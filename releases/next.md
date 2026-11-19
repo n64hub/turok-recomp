@@ -1,1 +1,0 @@
-- Looking up or down with the right stick or the arrow keys moves the view at once and leaves it where the stick lets go, as in Turok 2 and 3. Before, the view eased towards the stick's angle a second behind it and sank back level once the stick was let go.
