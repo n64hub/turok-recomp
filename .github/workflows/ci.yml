@@ -96,6 +96,7 @@ jobs:
         shell: bash
         run: |
           all="lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine"
+          git submodule init -q $all   # only the URLs: the superproject's .git/config is new, its .git/modules cached
           moved=$(git submodule status --recursive $all | awk '!/^ / { split($2, p, "/"); print p[1] "/" p[2] }' | sort -u)
           if grep -qx lib/N64Recomp-browser <<< "$moved"; then moved=$all; fi
           echo "moved:" $moved
@@ -223,6 +224,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           all="lib/N64ModernRuntime lib/N64Recomp-browser lib/RecompFrontend lib/rt64 lib/turok-engine"
+          git submodule init -q $all   # only the URLs: the superproject's .git/config is new, its .git/modules cached
           moved=$(git submodule status --recursive $all | awk '!/^ / { split($2, p, "/"); print p[1] "/" p[2] }' | sort -u)
           if grep -qx lib/N64Recomp-browser <<< "$moved"; then moved=$all; fi
           echo "moved:" $moved
