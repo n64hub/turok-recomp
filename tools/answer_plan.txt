@@ -1,0 +1,32 @@
+# Turok: Dinosaur Hunter's answer plan: a press reaches the picture at once and the view stays where the stick leaves
+# it, on its Linux build played by this plan with a stand-in pad. Each line is a step at seconds since the program
+# started, as in tools/soak_plan.txt, and pad <axis> <value> moves the stand-in pad's stick. answer <name> <control>
+# <value> <hold s> <press ms> <still ms> presses a control from a view that holds still and fails when the picture
+# answers later than <press ms> after the press, or settles later than <still ms> after the release.
+#
+# The title (state word 0x80119534 = 3), Start Game (Enter), the intro skipped (E) into the first level (4), then the
+# view looked down from level with the right stick and with the Down key, each brought back a little less far by
+# untimed pad steps, held down for 1.5 s, which leaves it on the grass at the look's limit, and turned right there. It
+# looks down, not up: looking up, the clouds in the sky between the canyon's walls drift on by themselves for seconds
+# after the view has stopped. v0.2.9 passes (its code, built from its pull request): the looks answered 188-208 ms
+# after the press and settled 1-215 ms after the release, the turn 224 ms and 110 ms. Until then the view eased
+# towards the stick's angle and sprang back level once it was let go: v0.2.8's looks settled 1687-1753 ms after the
+# release.
+10 until 0x80119534 0xFFFFFFFF 3 90 Enter
+12 until 0x80119534 0xFFFFFFFF 4 60 E
+38 shot level
+40 answer look-down righty 32767 0.4 500 1000
+45 pad righty -32768
+45.3 pad righty 0
+47 shot level2
+49 answer key-down key:Down 1 0.4 500 1000
+54 pad righty -32768
+54.3 pad righty 0
+56 shot level3
+58 answer hold-down righty 32767 1.5 500 1000
+67 shot down
+69 answer turn-right rightx 32767 0.4 500 1000
+74 pad rightx -32768
+74.4 pad rightx 0
+77 shot end
+78 end
