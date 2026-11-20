@@ -119,3 +119,44 @@ value = 0x0C014645
 func = "func_80052B1C"
 before_vram = 0x80053688
 text = "    { void turok_spring_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_spring_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.3613568f, 1.5707964f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"
+
+# A retrace sooner (lib/turok-engine's src/frame_pacing.cpp and docs/input_lag.md): the frame starts a retrace before
+# the one it is swapped in at, not right after the swap before it, so it reads the pad and moves the world that much
+# later. The game's retraces a frame is shown for are the word at 0x8011987C (the frame copies it into its task's
+# +0x184, which the swap rule reads) and its count of retraces since the frame on the screen was swapped in the word at
+# 0x800F9CA0. The frame (func_80009F6C, on the last task's done message in play) waits at its start; it has sent its
+# task at 0x8000AA58; and the retrace handler (func_8002BBFC) has sent the retrace to the game's threads at 0x8002BE60.
+[[patches.hook]]
+func = "func_80009F6C"
+before_vram = 0x80009F6C
+text = "    { void turok_start_frame_late(uint8_t*, recomp_context*, uint32_t, uint32_t); turok_start_frame_late(rdram, ctx, 0x8011987C, 0x800F9CA0); }"
+
+[[patches.hook]]
+func = "func_80009F6C"
+before_vram = 0x8000AA58
+text = "    { void turok_frame_sent(uint8_t*); turok_frame_sent(rdram); }"
+
+[[patches.hook]]
+func = "func_8002BBFC"
+before_vram = 0x8002BE60
+text = "    { void turok_retrace(uint8_t*); turok_retrace(rdram); }"
+
+# The frame sends its task through func_80008060, and a second one after it when the task's +0x188 is set (as Turok 2's
+# frame does with its map open; what sets it here isn't traced): a frame of two tasks is presented with Skip Buffering,
+# and the next starts at once (turok_frame_tasks): presented early, such a frame went out twice, the first time
+# without the second task's drawing.
+[[patches.hook]]
+func = "func_80008060"
+before_vram = 0x8000821C
+text = "    { void turok_frame_tasks(uint8_t*, uint32_t); turok_frame_tasks(rdram, MEM_W(0x188, ctx->r6) != 0 ? 2 : 1); }"
+
+# And the pad of the frame's own start. The frame starts a read of the pads (osContStartReadData at 0x80009FA4, unless
+# one is under way), and the game's thread takes the result (osContGetReadData into 0x801198E0, at 0x800098CC) on the
+# read's message, after the frame, so each frame played with the pad as it was at the end of the frame before: started
+# late, a retrace or more before. The pads are read again here, after the frame's start and its read and before the
+# frame takes the pad it plays with from the buffer (func_80010D40), so the frame plays with the pad of its start. The
+# game's own take after the frame still comes, and fills the buffer with what the next frame reads again.
+[[patches.hook]]
+func = "func_80009F6C"
+before_vram = 0x80009FAC
+text = "    { void osContGetReadData_recomp(uint8_t*, recomp_context*); gpr a0 = ctx->r4; ctx->r4 = (gpr)(int32_t)0x801198E0; osContGetReadData_recomp(rdram, ctx); ctx->r4 = a0; }"

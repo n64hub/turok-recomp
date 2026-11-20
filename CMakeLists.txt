@@ -239,6 +239,7 @@ target_sources(TurokRecompiled PRIVATE
     # kseg0, with nothing TLB-mapped.
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/audio.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/controller_pak.cpp
+    ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/frame_pacing.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/libultra.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/mouse_look.cpp
     ${CMAKE_SOURCE_DIR}/lib/turok-engine/src/pi_dma.cpp

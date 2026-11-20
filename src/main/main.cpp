@@ -573,8 +573,10 @@ int main(int argc, char** argv) {
         .get_rsp_microcode = get_rsp_microcode,
     };
 
-    // Skip Buffering: RT64 presents a framebuffer once the game swaps to it at a VI. Present Early, which shows one as
-    // soon as a task fills it, is untried with this game.
+    // Skip Buffering: RT64 presents a framebuffer once the game swaps to it at a VI. lib/turok-engine's
+    // src/frame_pacing.cpp switches to Present Early (a framebuffer presented as soon as the task that drew it is done)
+    // while the game runs a frame per two VIs, where the frame starts late (us.toml) and its task ends just before that
+    // VI, and back at any other count (its header says why).
     ultramodern::renderer::callbacks_t renderer_callbacks{
         .create_render_context = [](uint8_t* rdram, ultramodern::renderer::WindowHandle window_handle, bool developer_mode) {
             return recompui::renderer::create_render_context(rdram, window_handle, ultramodern::renderer::PresentationMode::SkipBuffering, developer_mode);
