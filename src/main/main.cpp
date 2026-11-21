@@ -95,7 +95,7 @@ ultramodern::gfx_callbacks_t::gfx_data_t create_gfx() {
 // One player: port 1 has a controller, any pad or the keyboard, with a pak in it, where the game keeps its Controller
 // Pak saves.
 // ultramodern reports a pak for any Pak but None, and RumblePak is the only other it has; which pak the game finds is
-// the engine's (lib/turok-engine/src/controller_pak.cpp, a Controller Pak in port 1).
+// the GameEntry's controller_pak_ports (turok::controller_pak_ports, a Controller Pak in port 1).
 ultramodern::input::connected_device_info_t get_connected_device_info(int controller_num) {
     if (recompinput::players::is_single_player_mode() || recompinput::players::get_player_is_assigned(controller_num)) {
         if (controller_num == 0) {
@@ -341,6 +341,8 @@ std::vector<recomp::GameEntry> supported_games = {
         .save_type = recomp::SaveType::None,
         .thumbnail_bytes = std::span<const char>(icon_bytes),
         .is_enabled = true,
+        // Its pak, the runtime's (librecomp/src/pak.cpp): saves/controllerpak_1.mpk.
+        .controller_pak_ports = turok::controller_pak_ports,
         .entrypoint_address = turok::boot_load_address,
         .entrypoint = recomp_entrypoint,
         .on_init_callback = on_init,

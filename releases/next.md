@@ -1,0 +1,1 @@
+- **Controller Pak:** the game's pak is now the one the web support's runtime has for every recomp, in place of a copy of its own. It is the same file (`saves/controllerpak_1.mpk`), so saves made by earlier versions load as before.
