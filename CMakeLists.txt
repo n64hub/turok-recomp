@@ -87,6 +87,9 @@ set(RT64_GAME_FRAME_WORKLOADS ON)
 set(RT64_SKIP_PLACE_SWAPS ON)
 set(RT64_SKIP_CAMERA_CUTS ON)
 set(RT64_SKIP_COLLAPSED_MATCHES ON)
+# The line microcodes' lines (G_LINE3D), which RT64 leaves out, drawn as quads along them on the screen: Turok 1's map
+# (L3DEX 1.00, through lib/turok-engine's rt64-4 patch), and L3DEX2's in Turok 2 and 3.
+set(RT64_DRAW_LINES ON)
 add_compile_definitions(HLSL_CPU)
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
