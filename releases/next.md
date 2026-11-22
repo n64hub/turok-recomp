@@ -1,0 +1,2 @@
+- **Room for 16 saves:** a save takes 16 of a Controller Pak's 123 pages, so the pak held seven. It now has three banks instead of one, room for a save in each of its 16 notes, and saves made with an earlier version carry over into it.
+- **Graphics:** the newest RT64 fixes from the web support, among them a camera cut no longer drawing rectangles and HUD text halfway between the two shots in the frames between.
