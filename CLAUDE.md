@@ -67,7 +67,8 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
 - Its libultra is older than n64sym's signatures for the functions the runtime replaces (osInitialize, the managers,
   osContInit, osPiStartDma, osAi*): `syms/names.toml` names them, found by their calls and registers.
 - It does its DMA through libultra's PI manager (osPiStartDma), unlike the later games' own DMA threads.
-- It saves to a Controller Pak in port 1.
+- It saves to a Controller Pak in port 1, of 3 banks (`turok::controller_pak_banks<3>`): a save takes 16 pages, and
+  3 banks (377 pages) hold one in each of the pak's 16 notes.
 - It walks and strafes on the C buttons and turns and looks with the stick; Z fires, R jumps, A and B change weapon
   (seen in the first level with `--input`), as the later games do. It looks down with the stick pushed up, as a
   plane's stick (seen on the page). `src/game/config.cpp` binds a shooter's layout to them, the right stick and the up

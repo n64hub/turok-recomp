@@ -341,8 +341,10 @@ std::vector<recomp::GameEntry> supported_games = {
         .save_type = recomp::SaveType::None,
         .thumbnail_bytes = std::span<const char>(icon_bytes),
         .is_enabled = true,
-        // Its pak, the runtime's (librecomp/src/pak.cpp): saves/controllerpak_1.mpk.
+        // Its pak, the runtime's (librecomp/src/pak.cpp): saves/controllerpak_1.mpk, of 3 banks, room for a save in
+        // each of the pak's 16 notes.
         .controller_pak_ports = turok::controller_pak_ports,
+        .controller_pak_banks = turok::controller_pak_banks<3>,
         .entrypoint_address = turok::boot_load_address,
         .entrypoint = recomp_entrypoint,
         .on_init_callback = on_init,
