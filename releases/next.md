@@ -1,0 +1,1 @@
+- **Mouse look under water:** the mouse now turns the view and looks up and down while swimming too, as it does on foot, instead of the arrow keys alone.
