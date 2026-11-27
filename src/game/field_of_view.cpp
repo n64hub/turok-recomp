@@ -50,14 +50,16 @@ namespace {
     // How long a frame's list is at most: a head further from the frame's start, or before it, isn't in its list.
     constexpr uint32_t kMaxFrameBytes = 0x40000;
 
-    // The frames counted by t1_field_of_view_frame_begin, and the frame the camera last made its matrix in: the
-    // camera's matrix is the frame's own, so the weapon takes a copy of it only in that frame.
-    uint32_t frame = 0;
-    uint32_t camera_frame = UINT32_MAX;
+    // Where the frame's display list starts, from t1_field_of_view_frame_begin.
     uint32_t frame_start = 0;
 
-    // The camera's matrix for the display list this frame, and how much wider its view is than the game's own, as the
-    // matrix's x and y columns are scaled.
+    // The pointer to the Mtx the view loads (func_80038AE4, at 0x80038C70) and the camera makes.
+    constexpr uint32_t kViewMatrix = 0x800FA310;
+
+    // The camera's matrix for the display list, the last it made, and how much wider its view is than the game's own,
+    // as the matrix's x and y columns are scaled. The camera runs in the game's update (func_80009F74, 0x8000AA1C),
+    // before the frame's draw (func_800023EC) begins its list, so the weapon takes a copy of it when it is still the
+    // matrix the view loads: a camera that didn't run since leaves the matrix it made, or another, there.
     uint32_t camera_matrix = 0;
     double camera_scale = 1.0;
 
@@ -148,13 +150,11 @@ extern "C" float t1_field_of_view(uint8_t* rdram, float fovy, uint32_t matrix) {
         camera_scale = std::tan(radians(scaled) / 2.0) / own_half;
     }
     camera_matrix = matrix;
-    camera_frame = frame;
     return scaled;
 }
 
 // The frame (func_800023EC, with its graphics struct) begins its display list, through the head at +0x1F810.
 extern "C" void t1_field_of_view_frame_begin(uint8_t* rdram, uint32_t graphics) {
-    frame++;
     frame_start = read_word(rdram, graphics + 0x1F810);
 }
 
@@ -163,7 +163,8 @@ extern "C" void t1_field_of_view_frame_begin(uint8_t* rdram, uint32_t graphics) 
 // weapon's loaded, and the view's load of the camera's matrix pointed at the world's.
 extern "C" void t1_weapon_view_begin(uint8_t* rdram, uint32_t head_var) {
     world_matrix = 0;
-    if (camera_frame != frame || camera_scale == 1.0 || read_word(rdram, kCinematic) != 0) {
+    if (camera_scale == 1.0 || camera_matrix == 0 || read_word(rdram, kViewMatrix) != camera_matrix ||
+        read_word(rdram, kCinematic) != 0) {
         return;
     }
     uint32_t list = read_word(rdram, head_var);
