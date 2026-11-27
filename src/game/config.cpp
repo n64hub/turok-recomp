@@ -1,6 +1,7 @@
 // The settings: RecompFrontend's General, Controls, Graphics, Sound and Mods tabs, with a first-person shooter's default
 // bindings. Its own Graphics options carry what a recomp needs: Resolution and MS Anti-Aliasing (high resolution),
-// Framerate (interpolation to the display's rate) and Aspect Ratio and HUD Placement (widescreen).
+// Framerate (interpolation to the display's rate) and Aspect Ratio and HUD Placement (widescreen); the game's own Field
+// of View (field_of_view.cpp) is added to it.
 
 #include <filesystem>
 #include <fstream>
@@ -91,7 +92,9 @@ void t1::init_config() {
     recompui::config::create_controls_tab();
     // RT64 copies no frame into RDRAM: the game never reads a frame it drew, nor writes into one (lib/turok-engine's
     // docs/render_to_ram.md). Its Copy Frames to RAM option turns the copy back on.
-    turok::add_copy_frames_option(recompui::config::create_graphics_tab());
+    recomp::config::Config& graphics = recompui::config::create_graphics_tab();
+    turok::add_copy_frames_option(graphics);
+    t1::add_field_of_view_option(graphics);
     recompui::config::create_sound_tab();
     recompui::config::create_mods_tab();
     recompui::config::finalize();

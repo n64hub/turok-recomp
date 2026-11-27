@@ -236,6 +236,7 @@ target_sources(TurokRecompiled PRIVATE
     ${CMAKE_SOURCE_DIR}/src/main/register_overlays.cpp
     ${CMAKE_SOURCE_DIR}/src/game/boot.cpp
     ${CMAKE_SOURCE_DIR}/src/game/config.cpp
+    ${CMAKE_SOURCE_DIR}/src/game/field_of_view.cpp
     ${CMAKE_SOURCE_DIR}/src/game/recomp_api.cpp
     ${CMAKE_SOURCE_DIR}/src/game/widescreen.cpp
     # The engine the Turok games share (lib/turok-engine/README.md), but its tlb_views.cpp: all of this game runs in

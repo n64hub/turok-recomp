@@ -56,10 +56,11 @@ value = 0x00000000
 # centred on the screen, and the bottom quarter's automatic anchoring would put a low line's left letters at the
 # window's left edge and its right ones at the right (the first level's "TO OPEN LEVEL PORTALS"), so they stay in the
 # middle of the window as they are at 4:3.
+# The Field of View option (src/game/field_of_view.cpp) searches the frame's list from where the frame begins it too.
 [[patches.hook]]
 func = "func_800023EC"
 before_vram = 0x8000240C
-text = "    { void t1_frame_begin(uint8_t*, uint32_t); t1_frame_begin(rdram, (uint32_t)ctx->r16); }"
+text = "    { void t1_frame_begin(uint8_t*, uint32_t); t1_frame_begin(rdram, (uint32_t)ctx->r16); void t1_field_of_view_frame_begin(uint8_t*, uint32_t); t1_field_of_view_frame_begin(rdram, (uint32_t)ctx->r16); }"
 
 [[patches.hook]]
 func = "func_80007E44"
@@ -92,6 +93,28 @@ text = "    { void turok_widen_culling(uint8_t*, uint32_t); turok_widen_culling(
 func = "func_80037E3C"
 before_vram = 0x80038A0C
 text = "    if ((uint32_t)ctx->r5 == (uint32_t)ctx->r29 + 0xC0) { void turok_widen_frustum(uint8_t*, uint32_t, uint32_t); turok_widen_frustum(rdram, (uint32_t)ctx->r29 + 0xC0, 5); }"
+
+# The Graphics tab's Field of View (src/game/field_of_view.cpp). The camera has its perspective's fovy in f12 here, the
+# base angle times its own factor (0x80038524), and is about to hand it to guPerspectiveF, its +0x34 and its view
+# pyramid: the hook has it give the scaled one. sp+0xB8 holds where it makes its matrix for the display list.
+[[patches.hook]]
+func = "func_80037E3C"
+before_vram = 0x80038544
+text = "    { float t1_field_of_view(uint8_t*, float, uint32_t); ctx->f12.fl = t1_field_of_view(rdram, ctx->f12.fl, (uint32_t)MEM_W(0xB8, ctx->r29)); }"
+
+# The weapon keeps the game's own view whatever the Field of View (src/game/field_of_view.cpp). func_8003119C draws the
+# player's object, the weapon in his hands, with func_8001C928 at 0x8003152C, the display list head's address in s0:
+# both ways of setting its clip ratio join at 0x80031518, and every way out of the draw, drawn or skipped, at
+# 0x80031534.
+[[patches.hook]]
+func = "func_8003119C"
+before_vram = 0x80031518
+text = "    { void t1_weapon_view_begin(uint8_t*, uint32_t); t1_weapon_view_begin(rdram, (uint32_t)ctx->r16); }"
+
+[[patches.hook]]
+func = "func_8003119C"
+before_vram = 0x80031534
+text = "    { void t1_weapon_view_end(uint8_t*, uint32_t); t1_weapon_view_end(rdram, (uint32_t)ctx->r16); }"
 
 # The menus go the way the keys and sticks are pushed. The game looks down with its stick pushed up, as a plane's stick,
 # so src/game/config.cpp binds the up arrow and the right stick pushed up to the stick pushed down, and src/main/main.cpp
