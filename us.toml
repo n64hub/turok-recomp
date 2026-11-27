@@ -143,6 +143,27 @@ func = "func_80052B1C"
 before_vram = 0x80053688
 text = "    { void turok_spring_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_spring_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.3613568f, 1.5707964f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"
 
+# And in water. The same function picks its look by where the player is against the water (func_800027BC, at sp+0x80):
+# 1 is under it, 3 is the other way it reads a water region, and the rest (on foot, wading) take the look above. In
+# water the target is the stick's up and down alone, (up - down) * -limit / 80, so pushed up looks down as on foot; the
+# limit is pi/2 under water, 80 degrees there while the player's +0x274 is set, and 80 degrees at 3. Each has just
+# stored the target from f14, with the pitch in f12, and next eases the pitch towards them: the engine adds the mouse
+# to the yaw and the pitch there too and makes the stick tilt the pitch at a rate, and both registers are read again.
+[[patches.hook]]
+func = "func_80052B1C"
+before_vram = 0x800533E4
+text = "    { void turok_spring_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_spring_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.5707964f, 1.5707964f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f14.u32l = MEM_W(0x68, ctx->r16); ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"
+
+[[patches.hook]]
+func = "func_80052B1C"
+before_vram = 0x80053478
+text = "    { void turok_spring_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_spring_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.3962634f, 1.3962634f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f14.u32l = MEM_W(0x68, ctx->r16); ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"
+
+[[patches.hook]]
+func = "func_80052B1C"
+before_vram = 0x80053530
+text = "    { void turok_spring_look(uint8_t*, uint32_t, float, uint32_t, float, gpr*, float, float); gpr target = MEM_W(0x68, ctx->r16); turok_spring_look(rdram, (uint32_t)MEM_W(0xB4, ctx->r29) + 0x64, 1.0f, (uint32_t)ctx->r16 + 0x70, 1.0f, &target, -1.3962634f, 1.3962634f); MEM_W(0x68, ctx->r16) = (int32_t)target; ctx->f14.u32l = MEM_W(0x68, ctx->r16); ctx->f12.u32l = MEM_W(0x70, ctx->r16); }"
+
 # A retrace sooner (lib/turok-engine's src/frame_pacing.cpp and docs/input_lag.md): the frame starts a retrace before
 # the one it is swapped in at, not right after the swap before it, so it reads the pad and moves the world that much
 # later. The game's retraces a frame is shown for are the word at 0x8011987C (the frame copies it into its task's
