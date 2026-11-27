@@ -105,16 +105,18 @@ text = "    { float t1_field_of_view(uint8_t*, float, uint32_t); ctx->f12.fl = t
 # The weapon keeps the game's own view whatever the Field of View (src/game/field_of_view.cpp). func_8003119C draws the
 # player's object, the weapon in his hands, with func_8001C928 at 0x8003152C, the display list head's address in s0:
 # both ways of setting its clip ratio join at 0x80031518, and every way out of the draw, drawn or skipped, at
-# 0x80031534.
+# 0x80031534. The weapon's matrices are in the world's space, built from the camera's (func_80018A84), so between them
+# the engine opens a matrix group that has RT64 move them smoothly with the camera while it interpolates
+# (turok_weapon_begin, turok_weapon_end in lib/turok-engine/docs/widescreen.md).
 [[patches.hook]]
 func = "func_8003119C"
 before_vram = 0x80031518
-text = "    { void t1_weapon_view_begin(uint8_t*, uint32_t); t1_weapon_view_begin(rdram, (uint32_t)ctx->r16); }"
+text = "    { void t1_weapon_view_begin(uint8_t*, uint32_t); t1_weapon_view_begin(rdram, (uint32_t)ctx->r16); void turok_weapon_begin(uint8_t*); turok_weapon_begin(rdram); }"
 
 [[patches.hook]]
 func = "func_8003119C"
 before_vram = 0x80031534
-text = "    { void t1_weapon_view_end(uint8_t*, uint32_t); t1_weapon_view_end(rdram, (uint32_t)ctx->r16); }"
+text = "    { void turok_weapon_end(uint8_t*); turok_weapon_end(rdram); void t1_weapon_view_end(uint8_t*, uint32_t); t1_weapon_view_end(rdram, (uint32_t)ctx->r16); }"
 
 # The menus go the way the keys and sticks are pushed. The game looks down with its stick pushed up, as a plane's stick,
 # so src/game/config.cpp binds the up arrow and the right stick pushed up to the stick pushed down, and src/main/main.cpp
