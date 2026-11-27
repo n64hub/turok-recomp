@@ -23,8 +23,8 @@ takes from the engine only what fits (the finder, the Controller Pak, the FPU mo
   `recompui_event_structs.h` are RecompFrontend's.
 - `src/main/main.cpp`: RecompFrontend's main with the GameEntry. `src/main/register_overlays.cpp`: the code sections,
   and the main program's functions registered where the boot code unpacks it. `src/game/`: the settings, the boot
-  code's ROM read (`boot.cpp`), the natives the patches call, and the frame's hook for the engine's widescreen
-  (`widescreen.cpp`).
+  code's ROM read (`boot.cpp`), the natives the patches call, the frame's hook for the engine's widescreen
+  (`widescreen.cpp`), and the Graphics tab's Field of View with its camera and weapon hooks (`field_of_view.cpp`).
 - `lib/`: `turok-engine`, upstream `rt64`, `N64ModernRuntime` and `RecompFrontend` at the commits N64Recomp-browser's
   web forks are built on, and `N64Recomp-browser`, whose `patches/` `tools/build_n64recomp.sh` and `CMakeLists.txt`
   apply to the other three. `runtime-patches/` are this game's own over them.
