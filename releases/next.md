@@ -1,1 +1,2 @@
 - **Mouse look under water:** the mouse now turns the view and looks up and down while swimming too, as it does on foot, instead of the arrow keys alone.
+- **Field of View:** the Graphics tab has a Field of View, 70% to 150%: more shows more of the world at the sides and above and below, less zooms in. Cinematics keep the game's own view, and the weapon in Turok's hands keeps its own size and place.
