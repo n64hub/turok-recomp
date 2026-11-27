@@ -1,0 +1,1 @@
+- **Weapon and mouse aim:** at a Framerate above Original, the weapon in Turok's hands no longer jolts sideways when the mouse starts a turn, and its moving parts stay together while the screen shakes.
